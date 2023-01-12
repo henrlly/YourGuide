@@ -1,0 +1,13 @@
+nodes:
+- input.visual:
+    source: 0
+- model.yolox:
+    model_type: yolox-tiny
+    detect: ["*"]
+- draw.bbox:
+    show_labels: True  
+- dabble.fps
+- custom_nodes.dabble.obj-detection
+- draw.legend:
+    show: ["fps"]
+- output.screen
