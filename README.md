@@ -1,5 +1,5 @@
 ### Dependencies
-playsound, gtts, pyaudio, peekingduck and SpeechRecognition
+playsound, gtts, pyaudio, peekingduck and SpeechRecognition, winsound
 
 
 ### How to use
