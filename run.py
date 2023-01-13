@@ -1,9 +1,11 @@
 import os, sys
 
-import playsound
-from gtts import gTTS
+script_dir = os.path.dirname( __file__ )
+tts_module_dir = os.path.join( script_dir, 'scripts' )
+sys.path.append( tts_module_dir )
+
+from tts_tool import tts
 import speech_recognition as sr
-from pathlib import Path
 
 #requires playsound, gtts, pyaudio and SpeechRecognition
 
@@ -64,33 +66,21 @@ if __name__ == '__main__':
     microphone = sr.Microphone()
 
     for j in range(PROMPT_LIMIT):
-        
-        tts = gTTS(f'Try {j+1}. Speak!')
-        
-        tts.save('audio.mp3')
-        audio = Path().cwd() / "audio.mp3"
-
-        playsound.playsound(audio)
-
+        tts(f'Try {j+1}. Speak!')
 
         guess = recognize_speech_from_mic(recognizer, microphone)
         if guess["transcription"]:
             break
         if not guess["success"]:
             break
-        tts = gTTS("I didn't catch that. What did you say?\n")
-        tts.save('./main-output.mp3')
-        playsound.playsound('./main-output.mp3')
+        tts("I didn't catch that. What did you say?")
 
     if guess["error"]:
-        tts = gTTS("ERROR: {}".format(guess["error"]))
-        tts.save('./main-output.mp3')
-        playsound.playsound('./main-output.mp3')
+        tts("ERROR: {}".format(guess["error"]))
+        
     else:
         
-        tts = gTTS("You said: {}".format(guess["transcription"]))
-        tts.save('./main-output.mp3')
-        playsound.playsound('./main-output.mp3')
+        tts("You said: {}".format(guess["transcription"]))
         
         with open('pipeline_config.txt', 'r') as f:
             f_data = f.read()
