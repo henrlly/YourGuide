@@ -1,12 +1,8 @@
-"""
-Node template for creating custom nodes.
-"""
-
 from typing import Any, Dict
 
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
-import os, playsound
+import os
 
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
@@ -33,23 +29,21 @@ class Node(AbstractNode):
         """
 
         bbox_labels = inputs["bbox_labels"]
-        caught = inputs["caught"]
-        print(str(type(caught))+str(caught))
-
-        blind_tool_folder = os.getcwd()
-        audio_file = 'beep-07a.mp3'
-        audio = os.path.join(blind_tool_folder,f'sounds/{audio_file}')
 
         specified_object = None
         with open('specified_object.txt','r') as f:
             specified_object = f.read()
 
-        if specified_object in bbox_labels:
-            #Sound Player
-            if caught == True: #first detected after undetected
-                playsound.playsound(audio)
+        if specified_object in bbox_labels: #tracker to prevent continuous beeping
+            self.logger.info("--------------------------------------------------") #breaklines
+            self.logger.info("--------------------------------------------------")
+            self.logger.info(f"Specified object <{specified_object}> detected")
+            caught = True
+        else: 
+            caught = False #reset value
 
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs
-        return {}
+        outputs = {'caught':caught}
+        return outputs

@@ -62,7 +62,7 @@ class Node(AbstractNode):
          cv2.putText(
             img=img,
             text=obj_3D_loc_str,
-            org=(math.floor((x1+x2)/2), math.floor((y1+y2)/2)),
+            org=(x1, math.floor((y1+y2)/2)),
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
             fontScale=0.8,
             color=RED,
