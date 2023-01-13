@@ -1,10 +1,7 @@
 import os, sys
 
-script_dir = os.path.dirname( __file__ )
-tts_module_dir = os.path.join( script_dir, 'scripts' )
-sys.path.append( tts_module_dir )
 
-from tts_tool import tts
+from scripts.tts_tool import tts
 import speech_recognition as sr
 
 #requires playsound, gtts, pyaudio and SpeechRecognition
