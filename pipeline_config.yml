@@ -3,7 +3,7 @@ nodes:
     source: 0
 - model.yolox:
     model_type: yolox-tiny
-    detect: ["cell phone", "Person"]
+    detect: ["bottle", "Person"]
 - draw.bbox:
     show_labels: True  
 - dabble.fps
