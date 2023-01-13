@@ -34,7 +34,6 @@ class Node(AbstractNode):
 
         bbox_labels = inputs["bbox_labels"]
         caught = inputs["caught"]
-        print(str(type(caught))+str(caught))
 
         blind_tool_folder = os.getcwd()
         audio_file = 'beep-07a.mp3'
@@ -46,7 +45,7 @@ class Node(AbstractNode):
 
         if specified_object in bbox_labels:
             #Sound Player
-            if caught == True: #first detected after undetected
+            if caught == False: #first detected after undetected
                 playsound.playsound(audio)
 
         # result = do_something(inputs["in1"], inputs["in2"])
