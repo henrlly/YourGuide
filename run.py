@@ -82,6 +82,12 @@ if __name__ == '__main__':
         with open('pipeline_config.txt', 'r') as f:
             f_data = f.read()
         n_data = f_data.replace('*', guess["transcription"])
+
+        ### Placeholder for the specified object ###
+        with open('specified_object.txt','w') as f:
+            f.write(guess["transcription"])
+        ### edit end ###
+
         with open('pipeline_config.yml', 'w') as f:
             f.write(n_data)
 
