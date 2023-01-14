@@ -5,14 +5,13 @@ nodes:
     model_type: yolox-tiny
     detect: ["*", "Person"]
     iou_threshold: 1
-    score_threshold: 0.15
 - dabble.fps
 - dabble.bbox_to_3d_loc
 - custom_nodes.dabble.obj-detection:
     show_labels: True
 - custom_nodes.dabble.debug
-- custom_nodes.draw.score
-- custom_nodes.draw.ThreeD_coords
+# - custom_nodes.draw.score
+# - custom_nodes.draw.ThreeD_coords
 - draw.legend:
     show: ["fps"]
 - output.screen
