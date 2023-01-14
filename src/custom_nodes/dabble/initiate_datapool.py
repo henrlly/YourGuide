@@ -48,11 +48,23 @@ class Node(AbstractNode):
         else:
             prev_coord = inputs["prev_coord"]
 
+        if "prev_displacements" not in data_pool:
+            prev_displacements = []
+        else:
+            prev_displacements = inputs["prev_displacements"]
+
+        if "prev_safe" not in data_pool:
+            prev_safe = []
+        else:
+            prev_safe = inputs["prev_safe"]
+
 
         outputs = {"obj_person_onscreen":obj_person_onscreen,
         "loop_count":loop_count,
         "counter":counter,
-        "prev_coord":prev_coord}
+        "prev_coord":prev_coord,
+        "prev_displacements":prev_displacements,
+        "prev_safe":prev_safe}
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs

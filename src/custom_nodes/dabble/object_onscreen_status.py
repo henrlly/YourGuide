@@ -2,6 +2,11 @@
 Node template for creating custom nodes.
 """
 
+###
+# obj_person_onscreen, prev_displacements, prev_safe are lists capturing the object status across a short period of time
+# these lists are all used to determine whether the object is blocked by hand
+###
+
 from typing import Any, Dict, List, Tuple
 import cv2, math
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
@@ -40,9 +45,6 @@ class Node(AbstractNode):
         # configs can be called by self.<config_name> e.g. self.filepath
         # self.logger.info(f"model loaded with configs: config")
 
-    def get_speed(self):
-        pass
-
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
 
@@ -60,30 +62,40 @@ class Node(AbstractNode):
         loop_count = inputs["loop_count"]
 
         counter = inputs["counter"]
-        counter_refresh = 10
-        strict_boundary = 100 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
+        counter_refresh = 20 #frames
+        strict_boundary_y = 70 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
+        strict_boundary_x = 120
 
         prev_coord = inputs["prev_coord"]
+        prev_displacements = inputs["prev_displacements"]
+        prev_displacements_max_length = 20
+
+        displacement_limit = 70 #any displacement above this is considered rigorous movement
+
+        prev_safe = inputs["prev_safe"]
+        prev_safe_max_length = 10
         
         obj_person_onscreen_max_length = 20
         obj = 'cell phone'
+
+
 
         #update obj_person_onscreen
         if ("person" in bbox_labels) and (obj in bbox_labels): #both appear 
             if len(obj_person_onscreen) < obj_person_onscreen_max_length:
                 obj_person_onscreen.append(True)
             else:
-                obj_person_onscreen[loop_count] = True
+                obj_person_onscreen[loop_count%obj_person_onscreen_max_length] = True
         else:
             if len(obj_person_onscreen) < obj_person_onscreen_max_length:
                 obj_person_onscreen.append(False)
             else:
-                obj_person_onscreen[loop_count] = False
+                obj_person_onscreen[loop_count%obj_person_onscreen_max_length] = False
 
         #get speed
         displacement = "Waiting to confirm"
         if obj in bbox_labels:
-            # if counter == 0:
+            # if counter == 0: #counter refresh
             for i, bbox in enumerate(bboxes):
                 x1, y1, x2, y2 = map_bbox_to_image_coords(bbox, img_size)
                 center_x = math.floor(abs(x2-x1))
@@ -96,7 +108,13 @@ class Node(AbstractNode):
 
                     self.logger.info(f"prev:{prev_coord}, curr:{current_coord}")
 
-                    prev_coord = current_coord
+                    prev_coord = current_coord #store value
+                else: displacement = 0
+
+                if len(prev_displacements) < prev_displacements_max_length:
+                    prev_displacements.append(displacement)
+                else: prev_displacements[loop_count%prev_displacements_max_length] = displacement
+
 
         else:
             displacement = "Not defined"
@@ -109,15 +127,30 @@ class Node(AbstractNode):
                 center_x = math.floor(abs(x2-x1))
                 center_y = math.floor(abs(y2-y1))
                 if bbox_labels[i] == obj:
-                    if strict_boundary<center_x<720-strict_boundary and strict_boundary<center_y<480-strict_boundary:
+                    if strict_boundary_x<center_x<(720-strict_boundary_x) and strict_boundary_y<center_y<(480-strict_boundary_y):
                         safe = True
                     else: safe = False
+        if len(prev_safe) < prev_safe_max_length:
+            prev_safe.append(safe)
+        else: prev_safe[loop_count%prev_safe_max_length] = safe
 
-        #check if object is blocked by hand
-        if obj_person_onscreen.count(True) >= obj_person_onscreen_max_length//2:
-            if obj not in bbox_labels:
+        # check if object is blocked by hand
+        if (obj_person_onscreen.count(True) >= 1):
+            print('checking block status\n'*5)
+            if False in prev_safe: #out of scene
+                obj_blocked_by_hand = False
+                obj_person_onscreen = [False] #renew
+
+            elif obj not in bbox_labels and 'person' in bbox_labels: #only hand exists
                 obj_blocked_by_hand = True
-            else: obj_blocked_by_hand = False
+
+            elif any([i for i in prev_displacements if i >= displacement_limit]): 
+                obj_blocked_by_hand = False
+                obj_person_onscreen = [False] #renew
+
+            else:
+                obj_blocked_by_hand = False
+
         else: obj_blocked_by_hand = 'Not defined'
 
         self.logger.info("--------------------------------------------------") #breaklines
@@ -126,6 +159,8 @@ class Node(AbstractNode):
         self.logger.info(f"obj_person_onscreen:{obj_person_onscreen}")
         self.logger.info(f"loop_count:{loop_count}")
         self.logger.info(f"counter:{counter}")
+        self.logger.info(f"prev_displacements:{prev_displacements}")
+        self.logger.info(f"prev_safe:{prev_safe}")
         
 
         #cv2
@@ -166,9 +201,11 @@ class Node(AbstractNode):
         outputs = {
             # "obj_blocked_by_hand":obj_blocked_by_hand,
             "obj_person_onscreen": obj_person_onscreen,
-            "loop_count":(loop_count+1)%len(obj_person_onscreen),
+            "loop_count":(loop_count+1)%100,
             "counter":(counter+1)%counter_refresh,
             "prev_coord":prev_coord,
             "obj_blocked_by_hand":obj_blocked_by_hand,
+            "prev_displacements":prev_displacements,
+            "prev_safe":prev_safe,
             }
         return outputs
