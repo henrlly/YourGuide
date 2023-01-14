@@ -153,14 +153,14 @@ class Node(AbstractNode):
 
         else: obj_blocked_by_hand = 'Not defined'
 
-        self.logger.info("--------------------------------------------------") #breaklines
-        self.logger.info("--------------------------------------------------")
-        # self.logger.info(f"bbox_labels:{bbox_labels}")
-        self.logger.info(f"obj_person_onscreen:{obj_person_onscreen}")
-        self.logger.info(f"loop_count:{loop_count}")
-        self.logger.info(f"counter:{counter}")
-        self.logger.info(f"prev_displacements:{prev_displacements}")
-        self.logger.info(f"prev_safe:{prev_safe}")
+        # self.logger.info("--------------------------------------------------") #breaklines
+        # self.logger.info("--------------------------------------------------")
+        # # self.logger.info(f"bbox_labels:{bbox_labels}")
+        # self.logger.info(f"obj_person_onscreen:{obj_person_onscreen}")
+        # self.logger.info(f"loop_count:{loop_count}")
+        # self.logger.info(f"counter:{counter}")
+        # self.logger.info(f"prev_displacements:{prev_displacements}")
+        # self.logger.info(f"prev_safe:{prev_safe}")
         
 
         #cv2
