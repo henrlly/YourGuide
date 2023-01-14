@@ -85,21 +85,21 @@ class Node(AbstractNode):
                 dist2d = np.linalg.norm(a-b)
                 
                 #min 2d distance
-                if px[0] >= ix[0] and px[0] <= ix[1]:
-                    #within x range
-                    if py[0] >= iy[0] and py[0] <= iy[1]:
-                        #within y range
-                        dist2d = 0
-                    else:
-                        dist2d = min(abs(py[0] - iy[0]), abs(py[0] - iy[1]))
-                else:
-                    if py[0] >= iy[0] and py[0] <= iy[1]:
-                        #within y range
-                        dist2d = min(abs(px[0] - ix[0]), abs(px[0] - ix[1]))
-                    else:
-                        dist2d = min(np.linalg.norm(np.array((px[0], py[0])) - np.array((ix[0], iy[0]))), np.linalg.norm(np.array((px[0], py[0])) - np.array((ix[1], iy[1]))))
-                
-                print(dist2d)
+                # if px[0] >= ix[0] and px[0] <= ix[1]:
+                #     #within x range
+                #     if py[0] >= iy[0] and py[0] <= iy[1]:
+                #         #within y range
+                #         dist2d = 0
+                #     else:
+                #         dist2d = min(abs(py[0] - iy[0]), abs(py[0] - iy[1]))
+                # else:
+                #     if py[0] >= iy[0] and py[0] <= iy[1]:
+                #         #within y range
+                #         dist2d = min(abs(px[0] - ix[0]), abs(px[0] - ix[1]))
+                #     else:
+                #         dist2d = min(np.linalg.norm(np.array((px[0], py[0])) - np.array((ix[0], iy[0]))), np.linalg.norm(np.array((px[0], py[0])) - np.array((ix[1], iy[1]))))
+
+                # print(dist2d)
 
 
                 self.playsound(int(3000 - 2000*dist2d), duration)
