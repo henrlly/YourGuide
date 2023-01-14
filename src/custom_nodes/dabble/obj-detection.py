@@ -83,6 +83,7 @@ class Node(AbstractNode):
                 b = np.array((bboxes[item_i][2] - bboxes[item_i][0], bboxes[item_i][3] - bboxes[item_i][1]))
                 print(a, b)
                 dist2d = np.linalg.norm(a-b)
+                print(f'dist2d:{dist2d}')
                 
                 #min 2d distance
                 # if px[0] >= ix[0] and px[0] <= ix[1]:
