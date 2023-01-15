@@ -75,12 +75,12 @@ class Node(AbstractNode):
                 print(dist3d)
 
                 #2d distance
-                px = (bboxes[person_i][0], bboxes[person_i][2])
-                py = (bboxes[person_i][1], bboxes[person_i][3])
-                ix = (bboxes[item_i][0], bboxes[item_i][2])
-                iy = (bboxes[item_i][1], bboxes[item_i][3])
-                a = np.array((bboxes[person_i][2] - bboxes[person_i][0], bboxes[person_i][3] - bboxes[person_i][1]))
-                b = np.array((bboxes[item_i][2] - bboxes[item_i][0], bboxes[item_i][3] - bboxes[item_i][1]))
+                # px = (bboxes[person_i][0], bboxes[person_i][2])
+                # py = (bboxes[person_i][1], bboxes[person_i][3])
+                # ix = (bboxes[item_i][0], bboxes[item_i][2])
+                # iy = (bboxes[item_i][1], bboxes[item_i][3])
+                a = np.array(((bboxes[person_i][2] + bboxes[person_i][0])/2, (bboxes[person_i][3] + bboxes[person_i][1])/2))
+                b = np.array(((bboxes[item_i][2] + bboxes[item_i][0])/2, (bboxes[item_i][3] + bboxes[item_i][1])/2))
                 print(a, b)
                 dist2d = np.linalg.norm(a-b)
                 print(f'dist2d:{dist2d}')
