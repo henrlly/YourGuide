@@ -3,16 +3,16 @@ nodes:
     source: 0
 - model.yolo:
     model_type: v4tiny
-    detect: ["*", "Person"]
+    detect: ["*, "Person"]
     iou_threshold: 1
     score_threshold: 0.15
 - dabble.fps
 - dabble.bbox_to_3d_loc
-- custom_nodes.dabble.initiate_datapool
 - custom_nodes.dabble.obj-detection
+- custom_nodes.dabble.initiate_datapool
 - custom_nodes.dabble.object_onscreen_status
 # - custom_nodes.dabble.debug
-- custom_nodes.draw.score
+# - custom_nodes.draw.score
 # - custom_nodes.draw.ThreeD_coords
 - draw.legend:
     show: ["fps"]

@@ -65,7 +65,7 @@ class Node(AbstractNode):
             else:
                 #both on screen
                 freq = 500
-                duration = 100
+                duration = 80
                 #####TODO: change this freq based on distance
 
                 #3d distance
@@ -103,7 +103,7 @@ class Node(AbstractNode):
                 # print(dist2d)
 
 
-                self.playsound(int(3000 - 2000*dist2d), duration)
+                self.playsound(int(5000 - 4000*dist2d), duration)
 
         elif item_i != -1:
             #only hand on screen
@@ -128,4 +128,4 @@ class Node(AbstractNode):
         draw_bboxes(
             inputs["img"], n_bboxes, n_bbox_labels, True
         )
-        return {}
+        return {"n_bboxes": n_bboxes, "n_bbox_labels":n_bbox_labels}

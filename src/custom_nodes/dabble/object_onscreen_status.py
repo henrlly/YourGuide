@@ -56,8 +56,8 @@ class Node(AbstractNode):
         """
         img = inputs["img"]
         img_size = (img.shape[1], img.shape[0])  # width, height
-        bbox_labels = inputs["bbox_labels"]
-        bboxes = inputs["bboxes"]
+        bbox_labels = inputs["n_bbox_labels"]
+        bboxes = inputs["n_bboxes"]
         obj_person_onscreen = inputs["obj_person_onscreen"]
         loop_count = inputs["loop_count"]
 
@@ -76,7 +76,8 @@ class Node(AbstractNode):
         prev_safe_max_length = 10
         
         obj_person_onscreen_max_length = 20
-        obj = 'cell phone'
+        with open("specified_object.txt", "r") as f:
+            obj = f.read()
 
 
 
