@@ -54,6 +54,8 @@ class Node(AbstractNode):
         Returns:
             outputs (dict): Dictionary with keys "__".
         """
+        DEBUG = True #turn this off to remove in-video texts
+
         img = inputs["img"]
         img_size = (img.shape[1], img.shape[0])  # width, height
         bbox_labels = inputs["n_bbox_labels"]
@@ -63,25 +65,25 @@ class Node(AbstractNode):
 
         counter = inputs["counter"]
         counter_refresh = 20 #frames
-        strict_boundary_y = 70 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
-        strict_boundary_x = 120
+        strict_boundary_y = 60 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
+        strict_boundary_x = 80
 
         prev_coord = inputs["prev_coord"]
         prev_displacements = inputs["prev_displacements"]
-        prev_displacements_max_length = 20
+        prev_displacements_max_length = 10
 
-        displacement_limit = 70 #any displacement above this is considered rigorous movement
+        displacement_limit = 80 #any displacement above this is considered rigorous movement
 
         prev_safe = inputs["prev_safe"]
-        prev_safe_max_length = 10
+        prev_safe_max_length = 5
         
-        obj_person_onscreen_max_length = 20
+        obj_person_onscreen_max_length = 10
         with open("specified_object.txt", "r") as f:
             obj = f.read()
 
 
 
-        #update obj_person_onscreen
+        #obj_person_onscreen: both object and person captured
         if ("person" in bbox_labels) and (obj in bbox_labels): #both appear 
             if len(obj_person_onscreen) < obj_person_onscreen_max_length:
                 obj_person_onscreen.append(True)
@@ -93,14 +95,14 @@ class Node(AbstractNode):
             else:
                 obj_person_onscreen[loop_count%obj_person_onscreen_max_length] = False
 
-        #get speed
+        #prev_displacement: get displacement per frame
         displacement = "Waiting to confirm"
         if obj in bbox_labels:
             # if counter == 0: #counter refresh
             for i, bbox in enumerate(bboxes):
                 x1, y1, x2, y2 = map_bbox_to_image_coords(bbox, img_size)
-                center_x = math.floor(abs(x2-x1))
-                center_y = math.floor(abs(y2-y1))
+                center_x = math.floor(abs((x2+x1)/2))
+                center_y = math.floor(abs((y2+y1)/2))
                 current_coord = (center_x,center_y)
                 if bbox_labels[i] == obj:
                     x_displacement = abs(current_coord[0]-prev_coord[0])
@@ -121,33 +123,49 @@ class Node(AbstractNode):
             displacement = "Not defined"
             current_coord = "Not defined"
 
+        #prev_safe: get safe status
         safe = 'Not defined'
         if obj in bbox_labels:
             for i, bbox in enumerate(bboxes):
-                x1, y1, x2, y2 = map_bbox_to_image_coords(bbox, img_size)
-                center_x = math.floor(abs(x2-x1))
-                center_y = math.floor(abs(y2-y1))
+                
+                if DEBUG:
+                    cv2.putText(
+                        img=img,
+                        text = f"current_coord:{current_coord}",
+                        org=(0, 200),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=1.0,
+                        color=(0,0,255),
+                        thickness=3,
+                    )
                 if bbox_labels[i] == obj:
-                    if strict_boundary_x<center_x<(720-strict_boundary_x) and strict_boundary_y<center_y<(480-strict_boundary_y):
+                    #NOTE: width should be 720 in theory. However, in practice, it seems smaller
+                    if strict_boundary_x<center_x<(620-strict_boundary_x) and strict_boundary_y<center_y<(480-strict_boundary_y):
                         safe = True
-                    else: safe = False
+                    else: 
+                        safe = False
+
         if len(prev_safe) < prev_safe_max_length:
             prev_safe.append(safe)
-        else: prev_safe[loop_count%prev_safe_max_length] = safe
+        else: 
+            prev_safe[loop_count%prev_safe_max_length] = safe
 
         # check if object is blocked by hand
-        if (obj_person_onscreen.count(True) >= 1):
-            print('checking block status\n'*5)
+        if (True in obj_person_onscreen):
             if False in prev_safe: #out of scene
+
+                obj_blocked_by_hand = False
+                obj_person_onscreen = [False] #renew
+
+            elif any([i for i in prev_displacements if i >= displacement_limit]): 
+
                 obj_blocked_by_hand = False
                 obj_person_onscreen = [False] #renew
 
             elif obj not in bbox_labels and 'person' in bbox_labels: #only hand exists
-                obj_blocked_by_hand = True
 
-            elif any([i for i in prev_displacements if i >= displacement_limit]): 
-                obj_blocked_by_hand = False
-                obj_person_onscreen = [False] #renew
+                obj_blocked_by_hand = True
+                obj_person_onscreen = [True] #renew
 
             else:
                 obj_blocked_by_hand = False
@@ -165,35 +183,36 @@ class Node(AbstractNode):
         
 
         #cv2
-        cv2.putText(
-            img=img,
-            text = f"displacement:{displacement}",
-            org=(0, 50),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=1.0,
-            color=(0,0,255),
-            thickness=3,
-         )
+        if DEBUG:
+            cv2.putText(
+                img=img,
+                text = f"displacement:{displacement}",
+                org=(0, 50),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=1.0,
+                color=(0,0,255),
+                thickness=3,
+            )
 
-        cv2.putText(
-            img=img,
-            text=f"safe:{safe}",
-            org=(0, 100),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=1.0,
-            color=(0,0,200),
-            thickness=3,
-         )
+            cv2.putText(
+                img=img,
+                text=f"safe:{safe}",
+                org=(0, 100),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=1.0,
+                color=(0,0,200),
+                thickness=3,
+            )
 
-        cv2.putText(
-            img=img,
-            text = f"obj_blocked_by_hand:{obj_blocked_by_hand}",
-            org=(0, 150),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=1.0,
-            color=(0,0,150),
-            thickness=3,
-         )
+            cv2.putText(
+                img=img,
+                text = f"obj_blocked_by_hand:{obj_blocked_by_hand}",
+                org=(0, 150),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=1.0,
+                color=(0,0,150),
+                thickness=3,
+            )
 
 
         # result = do_something(inputs["in1"], inputs["in2"])

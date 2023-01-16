@@ -41,6 +41,11 @@ class Node(AbstractNode):
         obj_3D_locs = inputs["obj_3D_locs"]
         bboxes = inputs["bboxes"]
 
+        #True: on screen but blocked by hand
+        #False: on screen
+        #Not defined: not on screen
+        obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
+
         max_score_p = 0
         max_score_item = 0
         person_i = -1
@@ -55,9 +60,15 @@ class Node(AbstractNode):
                 if bbox_scores[i] > max_score_item:
                     max_score_item = bbox_scores[i]
                     item_i = i
-        
 
-        if person_i != -1:
+        ### In case object is blocked by hand ###
+        if obj_blocked_by_hand == True:
+            dist2d = 0
+            duration = 80
+            self.playsound(int(5000 - 4000*dist2d), duration)
+        ### End case ###
+        
+        elif person_i != -1:
             if item_i == -1:
                 #only item on screen
                 self.playsound(500, 100)

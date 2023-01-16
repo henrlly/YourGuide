@@ -41,4 +41,11 @@ class Node(AbstractNode):
             self.logger.info(f"  label={label}, score={score:0.2f}")
             self.logger.info(f"  coords={bbox}")
 
+      n_bboxes = inputs["n_bboxes"]
+      n_bbox_labels = inputs["n_bbox_labels"]
+      self.logger.info(f"bboxes:{bboxes}")
+      self.logger.info(f"n_bboxes:{n_bboxes}:")
+      self.logger.info(f"bbox_labels:{bbox_labels}")
+      self.logger.info(f"n_bbox_labels:{n_bbox_labels}")
+
       return {}  # no outputs

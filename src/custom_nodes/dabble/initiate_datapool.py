@@ -58,13 +58,19 @@ class Node(AbstractNode):
         else:
             prev_safe = inputs["prev_safe"]
 
+        if "obj_blocked_by_hand" not in data_pool:
+            obj_blocked_by_hand = 'Not defined'
+        else:
+            obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
+
 
         outputs = {"obj_person_onscreen":obj_person_onscreen,
         "loop_count":loop_count,
         "counter":counter,
         "prev_coord":prev_coord,
         "prev_displacements":prev_displacements,
-        "prev_safe":prev_safe}
+        "prev_safe":prev_safe,
+        "obj_blocked_by_hand":obj_blocked_by_hand}
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs

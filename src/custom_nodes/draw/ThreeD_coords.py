@@ -45,7 +45,7 @@ class Node(AbstractNode):
 
       # extract pipeline inputs and compute image size in (width, height)
       img = inputs["img"]
-      bboxes = inputs["bboxes"]
+      bboxes = inputs["n_bboxes"]
       obj_3D_locs = inputs["obj_3D_locs"]
       img_size = (img.shape[1], img.shape[0])  # width, height
 
