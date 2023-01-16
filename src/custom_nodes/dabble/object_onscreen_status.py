@@ -64,20 +64,22 @@ class Node(AbstractNode):
         loop_count = inputs["loop_count"]
 
         counter = inputs["counter"]
-        counter_refresh = 20 #frames
+        counter_refresh = 20 #unit: frames
+
         strict_boundary_y = 60 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
         strict_boundary_x = 80
 
         prev_coord = inputs["prev_coord"]
         prev_displacements = inputs["prev_displacements"]
-        prev_displacements_max_length = 10
+        prev_displacements_max_length = 10 #unit: frames
 
         displacement_limit = 80 #any displacement above this is considered rigorous movement
 
         prev_safe = inputs["prev_safe"]
-        prev_safe_max_length = 5
+        prev_safe_max_length = 5 #unit: frames
         
-        obj_person_onscreen_max_length = 10
+        #change the time for obj_blocked_by_hand to last WHEN IT IS TRUE
+        obj_person_onscreen_max_length = 100 #unit: frames
         with open("specified_object.txt", "r") as f:
             obj = f.read()
 
@@ -165,7 +167,7 @@ class Node(AbstractNode):
             elif obj not in bbox_labels and 'person' in bbox_labels: #only hand exists
 
                 obj_blocked_by_hand = True
-                obj_person_onscreen = [True] #renew
+                # obj_person_onscreen = [True] #renew
 
             else:
                 obj_blocked_by_hand = False
