@@ -16,11 +16,9 @@ def map_bbox_to_image_coords(bbox: List[float], image_size: Tuple[int, int]) -> 
         image coords (absolute).
         Bounding box coords ranges from 0 to 1
         where (0, 0) = image top-left, (1, 1) = image bottom-right.
-
         Args:
             bbox (List[float]): List of 4 floats x1, y1, x2, y2
             image_size (Tuple[int, int]): Width, Height of image
-
         Returns:
             List[int]: x1, y1, x2, y2 in integer image coords
         """
@@ -34,7 +32,6 @@ def map_bbox_to_image_coords(bbox: List[float], image_size: Tuple[int, int]) -> 
 
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
-
     Args:
         config (:obj:`Dict[str, Any]` | :obj:`None`): Node configuration.
     """
@@ -47,10 +44,8 @@ class Node(AbstractNode):
 
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
-
         Args:
             inputs (dict): Dictionary with keys "__", "__".
-
         Returns:
             outputs (dict): Dictionary with keys "__".
         """

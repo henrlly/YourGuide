@@ -41,9 +41,7 @@ class Node(AbstractNode):
         obj_3D_locs = inputs["obj_3D_locs"]
         bboxes = inputs["bboxes"]
 
-        #True: on screen but blocked by hand
-        #False: on screen
-        #Not defined: not on screen
+        
         obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
 
         max_score_p = 0
@@ -70,8 +68,11 @@ class Node(AbstractNode):
         
         elif person_i != -1:
             if item_i == -1:
-                #only item on screen
-                self.playsound(500, 100)
+                #only person on screen
+                if obj_blocked_by_hand == True:
+                    self.playsound(4000, 100)
+                else:
+                    self.playsound(300, 100)
 
             else:
                 #both on screen
@@ -83,42 +84,25 @@ class Node(AbstractNode):
                 a = obj_3D_locs[person_i]
                 b = obj_3D_locs[item_i]
                 dist3d = np.linalg.norm(a-b)
-                print(dist3d)
+                print('3d dist: ', dist3d)
 
                 #2d distance
-                # px = (bboxes[person_i][0], bboxes[person_i][2])
-                # py = (bboxes[person_i][1], bboxes[person_i][3])
-                # ix = (bboxes[item_i][0], bboxes[item_i][2])
-                # iy = (bboxes[item_i][1], bboxes[item_i][3])
                 a = np.array(((bboxes[person_i][2] + bboxes[person_i][0])/2, (bboxes[person_i][3] + bboxes[person_i][1])/2))
                 b = np.array(((bboxes[item_i][2] + bboxes[item_i][0])/2, (bboxes[item_i][3] + bboxes[item_i][1])/2))
-                print(a, b)
+                # print(a, b)
                 dist2d = np.linalg.norm(a-b)
                 print(f'dist2d:{dist2d}')
                 
-                #min 2d distance
-                # if px[0] >= ix[0] and px[0] <= ix[1]:
-                #     #within x range
-                #     if py[0] >= iy[0] and py[0] <= iy[1]:
-                #         #within y range
-                #         dist2d = 0
-                #     else:
-                #         dist2d = min(abs(py[0] - iy[0]), abs(py[0] - iy[1]))
-                # else:
-                #     if py[0] >= iy[0] and py[0] <= iy[1]:
-                #         #within y range
-                #         dist2d = min(abs(px[0] - ix[0]), abs(px[0] - ix[1]))
-                #     else:
-                #         dist2d = min(np.linalg.norm(np.array((px[0], py[0])) - np.array((ix[0], iy[0]))), np.linalg.norm(np.array((px[0], py[0])) - np.array((ix[1], iy[1]))))
 
-                # print(dist2d)
-
-
-                self.playsound(int(5000 - 4000*dist2d), duration)
+                f_freq = 5000 - int(dist3d *530)
+                print(f_freq)
+                f_freq  =min(f_freq, 4000)
+                f_freq = max(f_freq, 1100)
+                self.playsound(f_freq, duration)
 
         elif item_i != -1:
-            #only hand on screen
-            self.playsound(300, 100)
+            #only item on screen
+            self.playsound(500, 100)
 
         #filter bboxes and labels
         if person_i != -1:

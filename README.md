@@ -1,8 +1,7 @@
 ### Dependencies
-playsound, gtts, pyaudio, peekingduck and SpeechRecognition, winsound
+playsound, gtts, pyaudio, peekingduck and SpeechRecognition, winsound, cuda 11.7, pytorch
 
-NOTE: peekingduck is buggy with python 3.10 and above
-use python<=3.9.13
+NOTE: peekingduck is buggy with python 3.10 and above, use python<=3.9.13
 
 get dependencies with
 ```

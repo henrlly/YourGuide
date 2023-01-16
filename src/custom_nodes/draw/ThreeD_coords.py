@@ -19,11 +19,9 @@ def map_bbox_to_image_coords(
    image coords (absolute).
    Bounding box coords ranges from 0 to 1
    where (0, 0) = image top-left, (1, 1) = image bottom-right.
-
    Args:
       bbox (List[float]): List of 4 floats x1, y1, x2, y2
       image_size (Tuple[int, int]): Width, Height of image
-
    Returns:
       List[int]: x1, y1, x2, y2 in integer image coords
    """

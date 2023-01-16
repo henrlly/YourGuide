@@ -9,7 +9,6 @@ from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
-
     Args:
         config (:obj:`Dict[str, Any]` | :obj:`None`): Node configuration.
     """
@@ -23,10 +22,8 @@ class Node(AbstractNode):
 
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
-
         Args:
             inputs (dict): Dictionary with keys "__", "__".
-
         Returns:
             outputs (dict): Dictionary with keys "__".
         """

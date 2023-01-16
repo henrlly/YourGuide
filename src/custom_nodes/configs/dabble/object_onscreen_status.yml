@@ -7,4 +7,3 @@ input: ["img","n_bboxes", "n_bbox_labels","obj_person_onscreen","loop_count","co
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
 output: ["obj_blocked_by_hand","obj_person_onscreen","loop_count","prev_coord","prev_displacements","prev_safe"]
-
