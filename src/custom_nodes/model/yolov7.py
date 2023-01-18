@@ -28,6 +28,8 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized,
 
 from typing import Any, Dict, List, Optional, Union
 
+torch.cuda.empty_cache()
+
 IMG_HEIGHT = 640
 IMG_WIDTH = 640
 SRC = 0
@@ -54,14 +56,14 @@ def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scale
         new_unpad = (new_shape[1], new_shape[0])
         ratio = new_shape[1] / shape[1], new_shape[0] / shape[0]  # width, height ratios
 
-    dw /= 2  # divide padding into 2 sides
-    dh /= 2
+#     dw /= 2  # divide padding into 2 sides
+#     dh /= 2
 
     if shape[::-1] != new_unpad:  # resize
         img = cv2.resize(img, new_unpad, interpolation=cv2.INTER_LINEAR)
-    top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
-    left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
-    img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
+#     top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
+#     left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+#     img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
     return img, ratio, (dw, dh)
 
 class Node(AbstractNode):
@@ -81,16 +83,16 @@ class Node(AbstractNode):
       self.imgsz = check_img_size(self.imgsz, s=self.stride)
       self.iou_thres = self.config['iou_thres']
       self.conf_thres = self.config['conf_thres']
-      cudnn.benchmark = True
       if self.device.type != 'cpu':
+            cudnn.benchmark = True
             self.half = True
             self.model.half()
             self.model(torch.zeros(1, 3, self.imgsz, self.imgsz).to(self.device).type_as(next(self.model.parameters())))  # run once
       else: self.half=False
       self.old_img_w = self.old_img_h = self.imgsz
       self.old_img_b = 1
-      self.names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
-      self.names = [x.lower() for x in self.names]
+      self.names = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
+      print(self.names)
       if self.config['classes'] == ['*']:
 
             self.classes = [x for x in range(80)]
@@ -124,12 +126,12 @@ class Node(AbstractNode):
             img = img.unsqueeze(0)
 
       # Warmup
-      # if self.device.type != 'cpu' and (self.old_img_b != img.shape[0] or self.old_img_h != img.shape[2] or self.old_img_w != img.shape[3]):
-      #       self.old_img_b = img.shape[0]
-      #       self.old_img_h = img.shape[2]
-      #       self.old_img_w = img.shape[3]
-      #       for i in range(3):
-      #             self.model(img, augment=True)[0]
+      if self.device.type != 'cpu' and (self.old_img_b != img.shape[0] or self.old_img_h != img.shape[2] or self.old_img_w != img.shape[3]):
+            self.old_img_b = img.shape[0]
+            self.old_img_h = img.shape[2]
+            self.old_img_w = img.shape[3]
+            for i in range(3):
+                  self.model(img, augment=True)[0]
 
       # Inference
       # t1 = time_synchronized()

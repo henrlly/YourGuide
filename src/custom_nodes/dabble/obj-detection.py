@@ -13,6 +13,8 @@ from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 from peekingduck.pipeline.nodes.draw.utils.bbox import draw_bboxes
 
 
+PLAY_SOUND = False
+
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
 
@@ -58,14 +60,9 @@ class Node(AbstractNode):
                 if bbox_scores[i] > max_score_item:
                     max_score_item = bbox_scores[i]
                     item_i = i
-
-        ### In case object is blocked by hand ###
-        if obj_blocked_by_hand == True:
-            dist2d = 0
-            duration = 80
-            self.playsound(int(5000 - 4000*dist2d), duration)
-        ### End case ###
         
+        if not PLAY_SOUND:
+            pass
         elif person_i != -1:
             if item_i == -1:
                 #only person on screen
@@ -96,7 +93,7 @@ class Node(AbstractNode):
 
                 f_freq = 5000 - int(dist3d *530)
                 print(f_freq)
-                f_freq  =min(f_freq, 4000)
+                f_freq  =min(f_freq, 4500)
                 f_freq = max(f_freq, 1100)
                 self.playsound(f_freq, duration)
 

@@ -1,16 +1,23 @@
 nodes:
 - input.visual:
     source: 0
+
+# - model.yolo:
+#     detect: ["cup", "cat", "laptop", "keyboard", "mouse"]
+#     model_type: v4tiny
+
+# - custom_nodes.model.yolov8
 - custom_nodes.model.yolov7
 - dabble.fps
 - dabble.bbox_to_3d_loc
 - custom_nodes.dabble.initiate_datapool
 - custom_nodes.dabble.obj-detection
 - custom_nodes.dabble.object_onscreen_status
+- custom_nodes.dabble.obj-navigation
 
 # - custom_nodes.dabble.debug
 # - custom_nodes.draw.score
-# - custom_nodes.draw.ThreeD_coords
+- custom_nodes.draw.ThreeD_coords
 - draw.legend:
     show: ["fps"]
 - output.screen
