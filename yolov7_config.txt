@@ -9,7 +9,6 @@ input: ["img"]
 output: [ "bboxes", "bbox_labels", 'bbox_scores']
 
 # Optional configs depending on node
-source: 0
 classes: ['*', 'person']
 iou_thres: 0.45                     # Intersection Over Union threshold
 conf_thres: 0.55                    # confidence threshold

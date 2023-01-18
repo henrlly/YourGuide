@@ -1,5 +1,5 @@
 
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional, Union
 import sys, os
 
 sys.path.append('yolov7_files')
@@ -26,13 +26,12 @@ from utils.general import check_img_size, check_requirements, check_imshow, non_
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized, TracedModel
 
-from typing import Any, Dict, List, Optional, Union
+
 
 torch.cuda.empty_cache()
 
 IMG_HEIGHT = 640
 IMG_WIDTH = 640
-SRC = 0
 
 def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleFill=False, scaleup=True, stride=32):
     # Resize and pad image while meeting stride-multiple constraints
@@ -73,8 +72,6 @@ class Node(AbstractNode):
 
    def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
       super().__init__(config, node_path=__name__, **kwargs)
-      # self.model = tf.keras.models.load_model('./weights')
-      self.source = self.config["source"]
       self.weights, self.imgsz, self.device = f"{self.config['weights'].lower()}.pt", 640, ''
       set_logging()
       self.device = select_device(self.device)
@@ -177,6 +174,5 @@ class Node(AbstractNode):
             "iou_thres": float,
             "conf_thres": float,
             "weights": str,
-            'source': Union[int, str],
             'show_bboxes': bool,
         }

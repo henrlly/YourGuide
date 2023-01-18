@@ -6,8 +6,8 @@ nodes:
 #     detect: ["cup", "cat", "laptop", "keyboard", "mouse"]
 #     model_type: v4tiny
 
-# - custom_nodes.model.yolov8
-- custom_nodes.model.yolov7
+- custom_nodes.model.yolov8
+# - custom_nodes.model.yolov7
 - dabble.fps
 - dabble.bbox_to_3d_loc
 - custom_nodes.dabble.initiate_datapool
@@ -17,7 +17,7 @@ nodes:
 
 # - custom_nodes.dabble.debug
 # - custom_nodes.draw.score
-- custom_nodes.draw.ThreeD_coords
+# - custom_nodes.draw.ThreeD_coords
 - draw.legend:
     show: ["fps"]
 - output.screen

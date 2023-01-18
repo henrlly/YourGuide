@@ -4,8 +4,9 @@ Node template for creating custom nodes.
 
 from typing import Any, Dict
 from openal import * 
-import threading, time
+import threading, time, sys
 import numpy as np
+
 
 from scripts.tts_tool import tts
 
