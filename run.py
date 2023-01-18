@@ -79,7 +79,7 @@ if __name__ == '__main__':
         
         tts("You said: {}".format(guess["transcription"]))
         
-        with open('yolov7_config.txt', 'r') as f:
+        with open('yolov8_config.txt', 'r') as f:
             f_data = f.read()
         n_data = f_data.replace('*', guess["transcription"])
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
             f.write(guess["transcription"])
         ### placeholder end ###
 
-        with open('src/custom_nodes/configs/model/yolov7.yml', 'w') as f:
+        with open('src/custom_nodes/configs/model/yolov8.yml', 'w') as f:
             f.write(n_data)
 
         os.system('cmd /c "peekingduck run"')

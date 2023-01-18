@@ -12,5 +12,5 @@ output: [ "bboxes", "bbox_labels", 'bbox_scores']
 classes: ['*', 'person']
 iou_thres: 0.45                     # Intersection Over Union threshold
 conf_thres: 0.55                    # confidence threshold
-weights: 'yolov7-tiny'              # yolov7, yolov7x, yolov7-tiny
+weights: 'yolov5l'              # yolov5s, yolov5m, yolov5l
 show_bboxes: False                  #show filtered ones instead
