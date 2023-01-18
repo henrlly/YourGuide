@@ -136,8 +136,8 @@ class Node(AbstractNode):
                         thickness=3,
                     )
                 if bbox_labels[i] == obj:
-                    #NOTE: width should be 720 in theory. However, in practice, it seems smaller
-                    if strict_boundary_x<center_x<(620-strict_boundary_x) and strict_boundary_y<center_y<(480-strict_boundary_y):
+                    #NOTE: width is 640
+                    if strict_boundary_x<center_x<(640-strict_boundary_x) and strict_boundary_y<center_y<(480-strict_boundary_y):
                         safe = True
                     else: 
                         safe = False
