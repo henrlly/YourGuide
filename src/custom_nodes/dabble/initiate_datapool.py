@@ -60,6 +60,11 @@ class Node(AbstractNode):
         else:
             obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
 
+        if "activate_detection" not in data_pool:
+            activate_detection = False
+        else:
+            activate_detection = inputs["activate_detection"]
+
 
         outputs = {"obj_person_onscreen":obj_person_onscreen,
         "loop_count":loop_count,
@@ -67,7 +72,8 @@ class Node(AbstractNode):
         "prev_coord":prev_coord,
         "prev_displacements":prev_displacements,
         "prev_safe":prev_safe,
-        "obj_blocked_by_hand":obj_blocked_by_hand}
+        "obj_blocked_by_hand":obj_blocked_by_hand,
+        'activate_detection':activate_detection}
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs

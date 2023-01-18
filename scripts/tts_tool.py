@@ -1,4 +1,4 @@
-import playsound
+import playsound, winsound, pygame, time
 from gtts import gTTS
 from pathlib import Path
 
@@ -6,5 +6,10 @@ from pathlib import Path
 def tts(text):
     tts_t = gTTS(text)
     tts_t.save("sounds/audio.mp3")
-    audio = Path(__file__).parent.parent/'sounds'/"audio.mp3"
-    playsound.playsound(audio)
+    # pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load("sounds/audio.mp3")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        time.sleep(1)
+    pygame.mixer.music.unload()

@@ -9,11 +9,13 @@ import numpy as np
 
 import winsound
 
+from scripts.tts_tool import tts
+
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 from peekingduck.pipeline.nodes.draw.utils.bbox import draw_bboxes
 
 
-PLAY_SOUND = False
+
 
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
@@ -24,11 +26,17 @@ class Node(AbstractNode):
     def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
         super().__init__(config, node_path=__name__, **kwargs)
         self.thread = None
+        self.thread1 = None
 
     def playsound(self, freq, duration):
         if self.thread is None or not self.thread.is_alive():
             self.thread = threading.Thread(target=winsound.Beep, args=(freq, duration), daemon=True)
             self.thread.start()
+
+    def tts_wrapper(self, text):
+        if self.thread1 is None or not self.thread1.is_alive():
+            self.thread1 = threading.Thread(target=tts, args=(text,), daemon=True)
+            self.thread1.start()
     
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
@@ -60,8 +68,8 @@ class Node(AbstractNode):
                 if bbox_scores[i] > max_score_item:
                     max_score_item = bbox_scores[i]
                     item_i = i
-        
-        if not PLAY_SOUND:
+        activate_detection = inputs['activate_detection']
+        if not activate_detection:
             pass
         elif person_i != -1:
             if item_i == -1:
@@ -100,6 +108,9 @@ class Node(AbstractNode):
         elif item_i != -1:
             #only item on screen
             self.playsound(500, 100)
+        else:
+            self.tts_wrapper('Activating navigation')
+            activate_detection = False
 
         #filter bboxes and labels
         if person_i != -1:
@@ -120,4 +131,4 @@ class Node(AbstractNode):
         draw_bboxes(
             inputs["img"], n_bboxes, n_bbox_labels, True
         )
-        return {"n_bboxes": n_bboxes, "n_bbox_labels":n_bbox_labels}
+        return {"n_bboxes": n_bboxes, "n_bbox_labels":n_bbox_labels, 'activate_detection': activate_detection}

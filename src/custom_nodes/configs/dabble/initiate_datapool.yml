@@ -6,7 +6,7 @@ input: ["all"]
 # Example:
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
-output: ["obj_person_onscreen","loop_count","counter","prev_coord","prev_displacements","prev_safe","obj_blocked_by_hand"]
+output: ["obj_person_onscreen","loop_count","counter","prev_coord","prev_displacements","prev_safe","obj_blocked_by_hand",'activate_detection']
 
 # # Optional configs depending on node
 # threshold: 0.5 # example
