@@ -11,6 +11,8 @@ from typing import Any, Dict, List, Tuple
 import cv2, math
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
+DEBUG = False #turn this off to remove in-video texts
+
 def map_bbox_to_image_coords(bbox: List[float], image_size: Tuple[int, int]) -> List[int]:
         """This is a helper function to map bounding box coords (relative) to
         image coords (absolute).
@@ -49,7 +51,6 @@ class Node(AbstractNode):
         Returns:
             outputs (dict): Dictionary with keys "__".
         """
-        DEBUG = True #turn this off to remove in-video texts
 
         img = inputs["img"]
         img_size = (img.shape[1], img.shape[0])  # width, height

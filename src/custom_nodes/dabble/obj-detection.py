@@ -50,9 +50,11 @@ class Node(AbstractNode):
         bbox_scores = inputs["bbox_scores"]
         obj_3D_locs = inputs["obj_3D_locs"]
         bboxes = inputs["bboxes"]
-
         
         obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
+
+        activate_detection = inputs['activate_detection']
+        activate_detection = False #for debug
 
         max_score_p = 0
         max_score_item = 0
@@ -68,7 +70,7 @@ class Node(AbstractNode):
                 if bbox_scores[i] > max_score_item:
                     max_score_item = bbox_scores[i]
                     item_i = i
-        activate_detection = inputs['activate_detection']
+        
         if not activate_detection:
             pass
         elif person_i != -1:
@@ -108,6 +110,7 @@ class Node(AbstractNode):
         elif item_i != -1:
             #only item on screen
             self.playsound(500, 100)
+
         else:
             self.tts_wrapper('Activating navigation')
             activate_detection = False
@@ -127,8 +130,22 @@ class Node(AbstractNode):
             n_bboxes = []
             n_bbox_labels = []
 
+
+        dist2d_centre = -1 #default
+
+        if item_i != -1: #as long as item appears
+            #2d distance from centre
+            a = np.array(((bboxes[item_i][2] + bboxes[item_i][0])/2, (bboxes[item_i][3] + bboxes[item_i][1])/2))
+            b = np.array((0.5, 0.5)) #center
+            # print(a, b)
+            dist2d_centre = np.linalg.norm(a-b)
+            print(f'dist2d_centre:{dist2d_centre}')
+
         #draw bboxes
         draw_bboxes(
             inputs["img"], n_bboxes, n_bbox_labels, True
         )
-        return {"n_bboxes": n_bboxes, "n_bbox_labels":n_bbox_labels, 'activate_detection': activate_detection}
+        return {"n_bboxes": n_bboxes, 
+        "n_bbox_labels":n_bbox_labels, 
+        'activate_detection': activate_detection,
+        "dist2d_centre":dist2d_centre}

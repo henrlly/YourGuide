@@ -7,4 +7,4 @@ input: ['img', "bboxes", "bbox_labels", 'bbox_scores', 'obj_3D_locs',"obj_blocke
 # Example:
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
-output: ["n_bboxes", "n_bbox_labels",'activate_detection']
+output: ["n_bboxes", "n_bbox_labels",'activate_detection',"dist2d_centre"]

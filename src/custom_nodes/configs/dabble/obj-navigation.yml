@@ -7,4 +7,4 @@ input: ['img', "n_bboxes", "n_bbox_labels", 'obj_3D_locs', 'activate_detection']
 # Example:
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
-output: ["activate_detection"]
+output: ["activate_detection","dist3d"]

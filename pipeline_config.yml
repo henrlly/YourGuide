@@ -1,6 +1,7 @@
 nodes:
 - input.visual:
     source: 0
+    # threading: True #improve fps
 
 # - model.yolo:
 #     detect: ["cup", "cat", "laptop", "keyboard", "mouse"]
@@ -13,6 +14,7 @@ nodes:
 - custom_nodes.dabble.initiate_datapool
 - custom_nodes.dabble.obj-detection
 - custom_nodes.dabble.object_onscreen_status
+- custom_nodes.dabble.obj-navigation-centering
 - custom_nodes.dabble.obj-navigation
 
 # - custom_nodes.dabble.debug

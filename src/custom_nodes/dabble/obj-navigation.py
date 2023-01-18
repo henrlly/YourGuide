@@ -66,9 +66,20 @@ class Node(AbstractNode):
         obj_3D_locs = inputs["obj_3D_locs"]
         if inputs["activate_detection"]:
             return {"activate_detection": True}
+        with open('specified_object.txt','r') as f:
+            obj = f.read()
+        
+        with open('sound_mode.txt') as f:
+            sound_mode = f.read()
 
+        dist3d = -1 #default
+        
         if len(bbox_labels)>1 or (bbox_labels!=[] and bbox_labels[0] != "person"):
-            self.playsound1(0.2, *obj_3D_locs[-1])
+
+            ### sound mode configuration ###
+            if sound_mode == '<eg. surround sound / 3D sound>':
+                self.playsound1(0.2, *obj_3D_locs[-1])
+            ### end configuration ###
 
             #3d dist
             a = obj_3D_locs[-1]
@@ -78,4 +89,5 @@ class Node(AbstractNode):
                 return {"activate_detection": True}
             print('3d dist: ', dist3d)
 
-        return {"activate_detection": False}
+        return {"activate_detection": False,
+        "dist3d":dist3d}

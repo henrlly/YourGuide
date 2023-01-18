@@ -65,6 +65,10 @@ class Node(AbstractNode):
         else:
             activate_detection = inputs["activate_detection"]
 
+        if "dist3d" not in data_pool:
+            dist3d = -1
+        else:
+            dist3d = inputs["dist3d"]
 
         outputs = {"obj_person_onscreen":obj_person_onscreen,
         "loop_count":loop_count,
@@ -73,7 +77,8 @@ class Node(AbstractNode):
         "prev_displacements":prev_displacements,
         "prev_safe":prev_safe,
         "obj_blocked_by_hand":obj_blocked_by_hand,
-        'activate_detection':activate_detection}
+        'activate_detection':activate_detection,
+        "dist3d":dist3d}
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs

@@ -11,7 +11,6 @@ import numpy as np
 
 RED = (0, 0, 255)        # in BGR format, per opencv's convention
 
-
 def map_bbox_to_image_coords(
    bbox: List[float], image_size: Tuple[int, int]
 ) -> List[int]:
@@ -33,7 +32,6 @@ def map_bbox_to_image_coords(
    y2 *= height
    return int(x1), int(y1), int(x2), int(y2)
 
-
 class Node(AbstractNode):
 
    def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
@@ -45,6 +43,7 @@ class Node(AbstractNode):
       img = inputs["img"]
       bboxes = inputs["n_bboxes"]
       obj_3D_locs = inputs["obj_3D_locs"]
+      bbox_labels = inputs["n_bbox_labels"]
       img_size = (img.shape[1], img.shape[0])  # width, height
 
       for i, bbox in enumerate(bboxes):
@@ -56,7 +55,9 @@ class Node(AbstractNode):
          x1, y1, x2, y2 = map_bbox_to_image_coords(bbox, img_size)
          obj_3D_loc = obj_3D_locs[i]
          obj_3D_loc = np.round(obj_3D_loc,1)
+         obj_3D_loc = obj_3D_loc.tolist()
          obj_3D_loc_str = f"{obj_3D_loc}"
+
          cv2.putText(
             img=img,
             text=obj_3D_loc_str,
