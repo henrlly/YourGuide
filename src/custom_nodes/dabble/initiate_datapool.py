@@ -7,6 +7,9 @@ from typing import Any, Dict
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
 
+
+
+
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
     Args:

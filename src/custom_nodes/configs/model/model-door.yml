@@ -9,8 +9,8 @@ input: ["img"]
 output: [ "bboxes", "bbox_labels", 'bbox_scores']
 
 # Optional configs depending on node
-classes: ['bottle', 'person']
-iou_thres: -1                    # Intersection Over Union threshold
-conf_thres: -1                    # confidence threshold
-weights: 'yolov8s'              # yolov8n, yolov8s, yolov8m
-show_bboxes: False                  #show filtered ones instead
+classes: ['open', 'closed']       # 'closed', 'open', 'downstair', 'upstair'
+iou_thres: 0.45                   # Intersection Over Union threshold
+conf_thres: 0.7                   # confidence threshold
+weights: 'best1'                  # best1, best
+show_bboxes: False                # show filtered ones instead

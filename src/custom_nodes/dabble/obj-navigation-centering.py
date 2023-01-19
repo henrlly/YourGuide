@@ -6,6 +6,8 @@ from typing import Any, Dict
 import threading, winsound, math
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
+from scripts.tts_tool import tts
+
 import cv2
 
 ############
@@ -15,6 +17,8 @@ import cv2
 ############
 
 DEBUG = True
+DIST_THRESHOLD_3D = 4.5
+DIST_THRESHOLD_2D = 0.5
 
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
@@ -26,13 +30,28 @@ class Node(AbstractNode):
     def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
         super().__init__(config, node_path=__name__, **kwargs)
         self.thread = None
-        # initialize/load any configs and models here
-        # configs can be called by self.<config_name> e.g. self.filepath
-        # self.logger.info(f"model loaded with configs: config")
+        self.thread1 = None
+
+        with open('sound_mode.txt') as f:
+            sound_mode = f.read()
+
+        if sound_mode == 'frequency':
+            self.is_frequency = True
+        else:
+            self.is_frequency = False
+
+        with open('specified_object.txt') as f:
+            self.specified_object = f.read()
+        
 
     def playsound(self, freq, duration):
+        if self.thread1 is None or not self.thread1.is_alive():
+            self.thread1 = threading.Thread(target=winsound.Beep, args=(freq, duration), daemon=True)
+            self.thread1.start()
+
+    def tts_wrapper(self, text):
         if self.thread is None or not self.thread.is_alive():
-            self.thread = threading.Thread(target=winsound.Beep, args=(freq, duration), daemon=True)
+            self.thread = threading.Thread(target=tts, args=(text,), daemon=True)
             self.thread.start()
 
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
@@ -44,13 +63,13 @@ class Node(AbstractNode):
         Returns:
             outputs (dict): Dictionary with keys "__".
         """
+
         dist2d_centre = inputs["dist2d_centre"] #theoretically ranges from 0 to 0.5
         dist3d = inputs["dist3d"] #theoretically ranges from THRESHOLD(i.e. 4) to idk maybe 100+ units
         activate_detection = inputs["activate_detection"]
-        with open('sound_mode.txt') as f:
-            sound_mode = f.read()
-
-        if sound_mode == 'normal':
+        bbox_labels = inputs["n_bbox_labels"]
+        
+        if self.is_frequency:
             coefficient = -1 #default 
 
             if activate_detection == True or dist2d_centre == -1 or dist3d == -1: #object not on screen
@@ -79,6 +98,11 @@ class Node(AbstractNode):
                 f_freq = max(f_freq, 1100)
                 self.playsound(f_freq, duration)
 
+                #conditions to activate detection
+                if dist3d < DIST_THRESHOLD_3D and dist2d_centre < DIST_THRESHOLD_2D and len(bbox_labels)>1 and self.specified_object != 'door':
+                    activate_detection = True
+                    self.tts_wrapper('Activating detection')
+
             if DEBUG:
                 cv2.putText(
                     img=inputs["img"],
@@ -100,7 +124,4 @@ class Node(AbstractNode):
                     thickness=3,
                 )
 
-        # result = do_something(inputs["in1"], inputs["in2"])
-        # outputs = {"out1": result}
-        # return outputs
-        return {}
+        return {'activate_detection':activate_detection}

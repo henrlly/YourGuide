@@ -4,8 +4,6 @@ import os, sys
 from scripts.tts_tool import tts
 import speech_recognition as sr
 
-#requires playsound, gtts, pyaudio and SpeechRecognition
-
 
 def recognize_speech_from_mic(recognizer, microphone):
     """Transcribe speech from recorded from `microphone`.
@@ -54,16 +52,13 @@ def recognize_speech_from_mic(recognizer, microphone):
 
     return response
 
-
-
-if __name__ == '__main__':
-
+def get_response_item():
     PROMPT_LIMIT = 5
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
 
     for j in range(PROMPT_LIMIT):
-        tts(f'Try {j+1}. Speak!')
+        tts(f'Try {j+1}. Find an item. Speak!')
 
         guess = recognize_speech_from_mic(recognizer, microphone)
         if guess["transcription"]:
@@ -74,22 +69,66 @@ if __name__ == '__main__':
 
     if guess["error"]:
         tts("ERROR: {}".format(guess["error"]))
-        
+        exit()
     else:
         
         tts("You said: {}".format(guess["transcription"]))
+
+    return guess["transcription"]
+
+def get_response_mode():
+    PROMPT_LIMIT = 5
+    recognizer = sr.Recognizer()
+    microphone = sr.Microphone()
+
+    for j in range(PROMPT_LIMIT):
+        tts(f'Try {j+1}. Choose mode: surround sound or frequency. Speak!')
+
+        guess = recognize_speech_from_mic(recognizer, microphone)
+        if guess["transcription"]:
+            break
+        if not guess["success"]:
+            break
+        tts("I didn't catch that. What did you say?")
+
+    if guess["error"]:
+        tts("ERROR: {}".format(guess["error"]))
+        exit()
+    else:
         
-        with open('yolov8_config.txt', 'r') as f:
+        tts("You said: {}".format(guess["transcription"]))
+
+    return guess["transcription"]
+
+if __name__ == '__main__':
+
+    item = get_response_item()
+    mode = get_response_mode()
+
+    
+    ### Placeholder for the specified object and mode ###
+    with open('specified_object.txt','w') as f:
+        f.write(item)
+    with open('sound_mode.txt','w') as f:
+        f.write(mode)
+    ### placeholder end ###
+
+    with open('pipeline_config_format.yml', 'r') as f:
+        pipeline_data = f.read()
+
+    if item == 'door':
+        pipeline_data = pipeline_data.replace('# - custom_nodes.model.model-door', '- custom_nodes.model.model-door')
+    else:
+        pipeline_data = pipeline_data.replace('# - custom_nodes.model.yolov8', '- custom_nodes.model.yolov8')
+
+        with open('yolov8_config.yml', 'r') as f:
             f_data = f.read()
-        n_data = f_data.replace('*', guess["transcription"])
-
-        ### Placeholder for the specified object ###
-        with open('specified_object.txt','w') as f:
-            f.write(guess["transcription"])
-        ### placeholder end ###
-
+        n_data = f_data.replace('*', item)
         with open('src/custom_nodes/configs/model/yolov8.yml', 'w') as f:
             f.write(n_data)
 
-        os.system('cmd /c "peekingduck run"')
+    with open('pipeline_config.yml', 'w') as f:
+        f.write(pipeline_data)
+
+    os.system('cmd /c "peekingduck run"')
     

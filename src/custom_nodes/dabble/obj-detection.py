@@ -3,7 +3,7 @@ Node template for creating custom nodes.
 """
 
 from typing import Any, Dict
-import threading
+import threading, math
 from pathlib import Path
 import numpy as np
 
@@ -54,7 +54,7 @@ class Node(AbstractNode):
         obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
 
         activate_detection = inputs['activate_detection']
-        activate_detection = False #for debug
+        # activate_detection = False #for debug
 
         max_score_p = 0
         max_score_item = 0
@@ -77,9 +77,9 @@ class Node(AbstractNode):
             if item_i == -1:
                 #only person on screen
                 if obj_blocked_by_hand == True:
-                    self.playsound(4000, 100)
+                    self.playsound(1100, 80)
                 else:
-                    self.playsound(300, 100)
+                    self.playsound(300, 150)
 
             else:
                 #both on screen
@@ -90,30 +90,28 @@ class Node(AbstractNode):
                 #3d distance
                 a = obj_3D_locs[person_i]
                 b = obj_3D_locs[item_i]
-                dist3d = np.linalg.norm(a-b)
-                print('3d dist: ', dist3d)
+                dist_3d = np.linalg.norm(a-b)
+                # print('3d dist: ', dist_3d)
 
                 #2d distance
                 a = np.array(((bboxes[person_i][2] + bboxes[person_i][0])/2, (bboxes[person_i][3] + bboxes[person_i][1])/2))
                 b = np.array(((bboxes[item_i][2] + bboxes[item_i][0])/2, (bboxes[item_i][3] + bboxes[item_i][1])/2))
                 # print(a, b)
                 dist2d = np.linalg.norm(a-b)
-                print(f'dist2d:{dist2d}')
+                # print(f'dist2d:{dist2d}')
                 
-
-                f_freq = 5000 - int(dist3d *530)
-                print(f_freq)
-                f_freq  =min(f_freq, 4500)
+                coefficient = round((dist2d)*(1+(math.log(dist_3d)-1)/2),3)
+                duration = 80
+                f_freq = math.floor(5000 * coefficient)
+                # print(f_freq)
+                f_freq = min(f_freq, 4500)
                 f_freq = max(f_freq, 1100)
                 self.playsound(f_freq, duration)
 
         elif item_i != -1:
             #only item on screen
-            self.playsound(500, 100)
+            self.playsound(400, 150)
 
-        else:
-            self.tts_wrapper('Activating navigation')
-            activate_detection = False
 
         #filter bboxes and labels
         if person_i != -1:
@@ -137,15 +135,16 @@ class Node(AbstractNode):
             #2d distance from centre
             a = np.array(((bboxes[item_i][2] + bboxes[item_i][0])/2, (bboxes[item_i][3] + bboxes[item_i][1])/2))
             b = np.array((0.5, 0.5)) #center
-            # print(a, b)
             dist2d_centre = np.linalg.norm(a-b)
-            print(f'dist2d_centre:{dist2d_centre}')
+            # print(f'dist2d_centre:{dist2d_centre}')
+
+
 
         #draw bboxes
         draw_bboxes(
             inputs["img"], n_bboxes, n_bbox_labels, True
         )
         return {"n_bboxes": n_bboxes, 
-        "n_bbox_labels":n_bbox_labels, 
-        'activate_detection': activate_detection,
-        "dist2d_centre":dist2d_centre}
+        "n_bbox_labels":n_bbox_labels,
+        "dist2d_centre":dist2d_centre
+        }

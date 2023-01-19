@@ -12,7 +12,7 @@ from scripts.tts_tool import tts
 
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
-DIST_THRESHOLD = 4
+DIST_THRESHOLD = 6
 
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
@@ -25,32 +25,49 @@ class Node(AbstractNode):
         super().__init__(config, node_path=__name__, **kwargs)
         self.thread = None
         self.thread1 = None
+        self.thread2 = None
+
+        with open('sound_mode.txt') as f:
+            sound_mode = f.read()
+
+        if sound_mode == 'frequency':
+            self.is_frequency = True
+        else:
+            self.is_frequency = False
+
+        with open('specified_object.txt') as f:
+            self.obj = f.read()
+
+        self.is_close = False
         # initialize/load any configs and models here
         # configs can be called by self.<config_name> e.g. self.filepath
         # self.logger.info(f"model loaded with configs: config")
 
-    def playsound_helper(self, duration, x,y,z):
+    def playsound_helper(self, duration, x,y,z, filename):
         sleep_time = duration
-        source = oalOpen("sounds/beep-01a.wav")
+        source = oalOpen(filename)
         source.set_position([x,y,z])
         source.set_looping(True)
         source.play()
         listener = Listener()
         listener.set_position([0, 0, 0])
-
-        y_pos = 5
         time.sleep(sleep_time)
         oalQuit()
+        
 
-    def playsound1(self, duration, x,y,z):
-        if self.thread is None or not self.thread.is_alive():
-            self.thread = threading.Thread(target=self.playsound_helper, args=(duration, x,y,z), daemon=True)
-            self.thread.start()
+    def playsound1(self, duration, x,y,z, filename):
+        if self.thread1 is None or not self.thread1.is_alive():
+            self.thread1 = threading.Thread(target=self.playsound_helper, args=(duration, x,y,z, filename), daemon=True)
+            self.thread1.start()
+    def playsound2(self, duration, x,y,z, filename):
+        if self.thread2 is None or not self.thread2.is_alive():
+            self.thread2 = threading.Thread(target=self.playsound_helper, args=(duration, x,y,z, filename), daemon=True)
+            self.thread2.start()
 
     def tts_wrapper(self, text):
-        if self.thread1 is None or not self.thread1.is_alive():
-            self.thread1 = threading.Thread(target=tts, args=(text,), daemon=True)
-            self.thread1.start()
+        if self.thread is None or not self.thread.is_alive():
+            self.thread = threading.Thread(target=tts, args=(text,), daemon=True)
+            self.thread.start()
 
 
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
@@ -64,30 +81,28 @@ class Node(AbstractNode):
         """
         bbox_labels = inputs["n_bbox_labels"]
         obj_3D_locs = inputs["obj_3D_locs"]
-        if inputs["activate_detection"]:
-            return {"activate_detection": True}
-        with open('specified_object.txt','r') as f:
-            obj = f.read()
-        
-        with open('sound_mode.txt') as f:
-            sound_mode = f.read()
+        dist3d = inputs['dist3d']
 
-        dist3d = -1 #default
+        if self.is_frequency:
+            if len(bbox_labels)>1 or (bbox_labels!=[] and bbox_labels[0] != "person"):
+                a = obj_3D_locs[-1]
+                dist3d = np.linalg.norm(a-[0,0,0])
+                return {"dist3d":dist3d}
         
         if len(bbox_labels)>1 or (bbox_labels!=[] and bbox_labels[0] != "person"):
 
-            ### sound mode configuration ###
-            if sound_mode == '<eg. surround sound / 3D sound>':
-                self.playsound1(0.2, *obj_3D_locs[-1])
-            ### end configuration ###
-
-            #3d dist
             a = obj_3D_locs[-1]
             dist3d = np.linalg.norm(a-[0,0,0])
+            # print(dist3d)
+            
             if dist3d < DIST_THRESHOLD:
-                self.tts_wrapper("Activating detection")
-                return {"activate_detection": True}
-            print('3d dist: ', dist3d)
+                self.playsound1(0.2, *obj_3D_locs[-1], "sounds/beep-01a.wav")
+                # self.tts_wrapper("object close by")
+                # self.is_close = True
+            else:
+                self.playsound1(0.2, *obj_3D_locs[-1], "sounds/beep-07a.wav")
 
-        return {"activate_detection": False,
-        "dist3d":dist3d}
+            
+
+
+        return {"dist3d":dist3d}

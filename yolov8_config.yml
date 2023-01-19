@@ -1,10 +1,16 @@
-
 # Mandatory configs
 # Receive bounding boxes and their respective labels as input. Replace with
 # other data types as required. List of built-in data types for PeekingDuck can
 # be found at https://peekingduck.readthedocs.io/en/stable/glossary.html.
-input: ['img', "bboxes", "bbox_labels", 'bbox_scores', 'obj_3D_locs',"obj_blocked_by_hand",'activate_detection']
+input: ["img"]
 # Example:
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
-output: ["n_bboxes", "n_bbox_labels","dist2d_centre"]
+output: [ "bboxes", "bbox_labels", 'bbox_scores']
+
+# Optional configs depending on node
+classes: ['*', 'person']
+iou_thres: -1                    # Intersection Over Union threshold
+conf_thres: -1                    # confidence threshold
+weights: 'yolov8s'              # yolov8n, yolov8s, yolov8m
+show_bboxes: False                  #show filtered ones instead

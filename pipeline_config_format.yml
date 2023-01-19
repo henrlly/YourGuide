@@ -4,7 +4,7 @@ nodes:
 
 # - custom_nodes.model.model-door
 
-- custom_nodes.model.yolov8
+# - custom_nodes.model.yolov8
 
 - dabble.fps
 - dabble.bbox_to_3d_loc

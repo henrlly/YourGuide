@@ -43,6 +43,8 @@ class Node(AbstractNode):
         # initialize/load any configs and models here
         # configs can be called by self.<config_name> e.g. self.filepath
         # self.logger.info(f"model loaded with configs: config")
+        with open("specified_object.txt", "r") as f:
+            self.obj = f.read()
 
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
@@ -76,13 +78,12 @@ class Node(AbstractNode):
         
         #change the time for obj_blocked_by_hand to last WHEN IT IS TRUE
         obj_person_onscreen_max_length = 100 #unit: frames
-        with open("specified_object.txt", "r") as f:
-            obj = f.read()
+        
 
 
 
         #obj_person_onscreen: both object and person captured
-        if ("person" in bbox_labels) and (obj in bbox_labels): #both appear 
+        if ("person" in bbox_labels) and (self.obj in bbox_labels): #both appear 
             if len(obj_person_onscreen) < obj_person_onscreen_max_length:
                 obj_person_onscreen.append(True)
             else:
@@ -95,14 +96,14 @@ class Node(AbstractNode):
 
         #prev_displacement: get displacement per frame
         displacement = "Waiting to confirm"
-        if obj in bbox_labels:
+        if self.obj in bbox_labels:
             # if counter == 0: #counter refresh
             for i, bbox in enumerate(bboxes):
                 x1, y1, x2, y2 = map_bbox_to_image_coords(bbox, img_size)
                 center_x = math.floor(abs((x2+x1)/2))
                 center_y = math.floor(abs((y2+y1)/2))
                 current_coord = (center_x,center_y)
-                if bbox_labels[i] == obj:
+                if bbox_labels[i] == self.obj:
                     x_displacement = abs(current_coord[0]-prev_coord[0])
                     y_displacement = abs(current_coord[1]-prev_coord[1])
                     displacement = math.floor(math.sqrt(x_displacement**2+y_displacement**2))
@@ -123,7 +124,7 @@ class Node(AbstractNode):
 
         #prev_safe: get safe status
         safe = 'Not defined'
-        if obj in bbox_labels:
+        if self.obj in bbox_labels:
             for i, bbox in enumerate(bboxes):
                 
                 if DEBUG:
@@ -136,7 +137,7 @@ class Node(AbstractNode):
                         color=(0,0,255),
                         thickness=3,
                     )
-                if bbox_labels[i] == obj:
+                if bbox_labels[i] == self.obj:
                     #NOTE: width is 640
                     if strict_boundary_x<center_x<(640-strict_boundary_x) and strict_boundary_y<center_y<(480-strict_boundary_y):
                         safe = True
@@ -160,7 +161,7 @@ class Node(AbstractNode):
                 obj_blocked_by_hand = False
                 obj_person_onscreen = [False] #renew
 
-            elif obj not in bbox_labels and 'person' in bbox_labels: #only hand exists
+            elif self.obj not in bbox_labels and 'person' in bbox_labels: #only hand exists
 
                 obj_blocked_by_hand = True
                 # obj_person_onscreen = [True] #renew
