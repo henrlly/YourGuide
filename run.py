@@ -74,7 +74,7 @@ def get_response_item():
         
         tts("You said: {}".format(guess["transcription"]))
 
-    return guess["transcription"]
+    return guess["transcription"].lower()
 
 def get_response_mode():
     PROMPT_LIMIT = 5
@@ -98,7 +98,7 @@ def get_response_mode():
         
         tts("You said: {}".format(guess["transcription"]))
 
-    return guess["transcription"]
+    return guess["transcription"].lower()
 
 if __name__ == '__main__':
 

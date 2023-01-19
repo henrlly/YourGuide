@@ -9,8 +9,8 @@ input: ["img"]
 output: [ "bboxes", "bbox_labels", 'bbox_scores']
 
 # Optional configs depending on node
-classes: ['open', 'closed']       # 'closed', 'open', 'downstair', 'upstair'
+classes: ['*']                     # 'closed', 'semi', 'open'
 iou_thres: 0.45                   # Intersection Over Union threshold
-conf_thres: 0.7                   # confidence threshold
-weights: 'best1'                  # best1, best
+conf_thres: 0.85                   # confidence threshold
+weights: 'best'                  # best2, best, last
 show_bboxes: False                # show filtered ones instead

@@ -7,6 +7,9 @@ import numpy as np
 
 import torch
 
+from ultralytics import YOLO
+from ultralytics.yolo.utils.ops import non_max_suppression
+
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 from peekingduck.pipeline.nodes.draw.utils.bbox import draw_bboxes
 
@@ -20,18 +23,20 @@ class Node(AbstractNode):
 
     def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
         super().__init__(config, node_path=__name__, **kwargs)
-        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=self.config['weights'])
-        
-        
-        if self.config['iou_thres'] != -1:
-            self.model.conf = self.config['conf_thres']
-        
-        if self.config['iou_thres'] != -1:
-            self.model.iou = self.config['iou_thres']
-        self.names = ['closed', 'open', 'downstair', 'upstair']
+        self.model = YOLO(self.config['weights']+'.pt')
+        # initialize/load any configs and models here
+        # configs can be called by self.<config_name> e.g. self.filepath
+        # self.logger.info(f"model loaded with configs: config")
+        self.names  =['closed', 'semi', 'open']
+        if self.config['conf_thres']== -1:
+            self.config['conf_thres'] = 0.8
+        if self.config['iou_thres'] == -1:
+            self.config['iou_thres'] = 0.45
         if self.config['classes'] != ['*']:
-            self.model.classes = [self.names.index(x) for x in self.config['classes']]
-        
+            self.cls = [self.names.index(x) for x in self.config['classes']]
+        else:
+            self.cls = [i for i in range(3)]
+        print(self.model.overrides['cfg'])
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
 
@@ -42,16 +47,18 @@ class Node(AbstractNode):
             outputs (dict): Dictionary with keys "__".
         """
         img = inputs["img"]
-        outputs = self.model(img)
+        result = self.model.predict(source=img, imgsz=640, conf=self.config['conf_thres'], iou=self.config['iou_thres'])[0]
+
+        
         bboxes = []
         bbox_labels = []
         bbox_scores = []
-        for rows in outputs.pandas().xyxyn:
-            for i, output in rows.iterrows():
-                # print(output)
-                bboxes.append(np.array([output['xmin'], output['ymin'], output['xmax'], output['ymax']]))
-                bbox_labels.append(self.names[output['class']])
-                bbox_scores.append(output['confidence'])
+
+        for i,x in enumerate(result.boxes.cls.cpu().numpy()):
+            if x in self.cls:
+                bboxes.append(result.boxes.xyxyn.cpu().numpy()[i])
+                bbox_labels.append(self.names[int(result.boxes.cls.cpu().numpy()[i])])
+                bbox_scores.append(result.boxes.conf.cpu().numpy()[i])
 
         
         if self.config['show_bboxes']:
