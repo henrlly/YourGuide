@@ -9,7 +9,7 @@ input: ["img"]
 output: [None]
 
 # Optional configs depending on node
-filter_threshold: 0.205 
-prev_preds_length: 50
-prev_preds_thres: 0.8
-model: 'best-cls-m-2'
+filter_threshold: 0.220
+prev_preds_length: 30
+prev_preds_thres: 0.95
+model: 'best-cls-m'
