@@ -9,7 +9,6 @@ import numpy as np
 
 import winsound
 
-from scripts.tts_tool import tts
 
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 from peekingduck.pipeline.nodes.draw.utils.bbox import draw_bboxes
@@ -33,10 +32,6 @@ class Node(AbstractNode):
             self.thread = threading.Thread(target=winsound.Beep, args=(freq, duration), daemon=True)
             self.thread.start()
 
-    def tts_wrapper(self, text):
-        if self.thread1 is None or not self.thread1.is_alive():
-            self.thread1 = threading.Thread(target=tts, args=(text,), daemon=True)
-            self.thread1.start()
     
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.

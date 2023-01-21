@@ -1,15 +1,13 @@
-import playsound, winsound, pygame, time
+import playsound, winsound, time, os
 from gtts import gTTS
 from pathlib import Path
+from pydub import AudioSegment
 
 
 def tts(text):
     tts_t = gTTS(text)
     tts_t.save("sounds/audio.mp3")
+    sound = AudioSegment.from_mp3("sounds/audio.mp3")
+    sound.export("sounds/audio.wav", format="wav")
     # pygame.init()
-    pygame.mixer.init()
-    pygame.mixer.music.load("sounds/audio.mp3")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        time.sleep(1)
-    pygame.mixer.music.unload()
+    winsound.PlaySound("sounds/audio.wav",winsound.SND_NODEFAULT |  winsound.SND_FILENAME)

@@ -6,9 +6,10 @@ from typing import Any, Dict
 import threading, winsound, math
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
-from scripts.tts_tool import tts
 
 import cv2
+
+from scripts.tts_tool import tts
 
 ############
 #to implement a coefficient(range from 0 to 1) that combines dist2d_centre and dist3d based on their weights

@@ -6,11 +6,10 @@ input: ["img"]
 # Example:
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
-output: [ "bboxes", "bbox_labels", 'bbox_scores']
+output: [None]
 
 # Optional configs depending on node
-classes: ['*']                     # 'closed', 'semi', 'open'
-iou_thres: 0.45                   # Intersection Over Union threshold
-conf_thres: 0.85                   # confidence threshold
-weights: 'best-door'                  # best2-door, best-door, last-door
-show_bboxes: False                # show filtered ones instead
+filter_threshold: 0.205 
+prev_preds_length: 50
+prev_preds_thres: 0.8
+model: 'best-cls-m-2'

@@ -1,5 +1,6 @@
 ### Dependencies
-playsound, gtts, pyaudio, peekingduck and SpeechRecognition, winsound, cuda 11.7, pytorch, ultralytics
+playsound, gtts, pyaudio, peekingduck and SpeechRecognition, winsound, cuda 11.7, pytorch, ultralytics, pydub
+install ffmpeg from https://github.com/BtbN/FFmpeg-Builds/releases/
 
 NOTE: peekingduck is buggy with python 3.10 and above, use python<=3.9.13
 

@@ -1,7 +1,7 @@
 import os, sys
 
 
-from scripts.tts_tool import tts
+from src.scripts.tts_tool import tts
 import speech_recognition as sr
 
 
@@ -103,32 +103,39 @@ def get_response_mode():
 if __name__ == '__main__':
 
     item = get_response_item()
-    mode = get_response_mode()
+    if item=='doors':
+        item = 'door'
+    if item.lower() in ['banknote', 'bank note','note','notes','bill','bills','cash', 'currency','bank notes', 'banknotes']:
+        with open('pipeline_config_banknote.yml', 'r') as f:
+            pipeline_data = f.read()
+        with open('pipeline_config.yml', 'w') as f:
+            f.write(pipeline_data)
 
-    
-    ### Placeholder for the specified object and mode ###
-    with open('specified_object.txt','w') as f:
-        f.write(item)
-    with open('sound_mode.txt','w') as f:
-        f.write(mode)
-    ### placeholder end ###
-
-    with open('pipeline_config_format.yml', 'r') as f:
-        pipeline_data = f.read()
-
-    if item == 'door':
-        pipeline_data = pipeline_data.replace('# - custom_nodes.model.model-door', '- custom_nodes.model.model-door')
     else:
-        pipeline_data = pipeline_data.replace('# - custom_nodes.model.yolov8', '- custom_nodes.model.yolov8')
+        mode = get_response_mode()
+        ### Placeholder for the specified object and mode ###
+        with open('specified_object.txt','w') as f:
+            f.write(item)
+        with open('sound_mode.txt','w') as f:
+            f.write(mode)
+        ### placeholder end ###
 
-        with open('yolov8_config.yml', 'r') as f:
-            f_data = f.read()
-        n_data = f_data.replace('*', item)
-        with open('src/custom_nodes/configs/model/yolov8.yml', 'w') as f:
-            f.write(n_data)
+        with open('pipeline_config_format.yml', 'r') as f:
+            pipeline_data = f.read()
 
-    with open('pipeline_config.yml', 'w') as f:
-        f.write(pipeline_data)
+        if item == 'door':
+            pipeline_data = pipeline_data.replace('# - custom_nodes.model.model-door', '- custom_nodes.model.model-door')
+        else:
+            pipeline_data = pipeline_data.replace('# - custom_nodes.model.yolov8', '- custom_nodes.model.yolov8')
+
+            with open('yolov8_config.yml', 'r') as f:
+                f_data = f.read()
+            n_data = f_data.replace('*', item)
+            with open('src/custom_nodes/configs/model/yolov8.yml', 'w') as f:
+                f.write(n_data)
+
+        with open('pipeline_config.yml', 'w') as f:
+            f.write(pipeline_data)
 
     os.system('cmd /c "peekingduck run"')
     
