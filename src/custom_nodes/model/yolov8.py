@@ -48,7 +48,7 @@ class Node(AbstractNode):
             outputs (dict): Dictionary with keys "__".
         """
         img = inputs["img"]
-        result = self.model.predict(source=img, imgsz=640, conf=self.config['conf_thres'], iou=self.config['iou_thres'])[0]
+        result = self.model.predict(source=img, imgsz=640, conf=self.config['conf_thres'], iou=self.config['iou_thres'], classes=self.cls)[0]
 
         
         bboxes = []
@@ -56,10 +56,9 @@ class Node(AbstractNode):
         bbox_scores = []
 
         for i,x in enumerate(result.boxes.cls.cpu().numpy()):
-            if x in self.cls:
-                bboxes.append(result.boxes.xyxyn.cpu().numpy()[i])
-                bbox_labels.append(self.names[int(result.boxes.cls.cpu().numpy()[i])])
-                bbox_scores.append(result.boxes.conf.cpu().numpy()[i])
+            bboxes.append(result.boxes.xyxyn.cpu().numpy()[i])
+            bbox_labels.append(self.names[int(result.boxes.cls.cpu().numpy()[i])])
+            bbox_scores.append(result.boxes.conf.cpu().numpy()[i])
 
         
         if self.config['show_bboxes']:

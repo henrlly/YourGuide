@@ -27,7 +27,8 @@ class Node(AbstractNode):
         # initialize/load any configs and models here
         # configs can be called by self.<config_name> e.g. self.filepath
         # self.logger.info(f"model loaded with configs: config")
-        self.names  =['closed', 'semi', 'open']
+        # self.names  =['closed', 'semi', 'open']
+        self.names  =['door','handle','cabinet door','refrigerator door']
         if self.config['conf_thres']== -1:
             self.config['conf_thres'] = 0.8
         if self.config['iou_thres'] == -1:
@@ -35,7 +36,7 @@ class Node(AbstractNode):
         if self.config['classes'] != ['*']:
             self.cls = [self.names.index(x) for x in self.config['classes']]
         else:
-            self.cls = [i for i in range(3)]
+            self.cls = [i for i in range(4)]
         print(self.model.overrides['cfg'])
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
@@ -47,7 +48,7 @@ class Node(AbstractNode):
             outputs (dict): Dictionary with keys "__".
         """
         img = inputs["img"]
-        result = self.model.predict(source=img, imgsz=640, conf=self.config['conf_thres'], iou=self.config['iou_thres'])[0]
+        result = self.model.predict(source=img, imgsz=640, conf=self.config['conf_thres'], iou=self.config['iou_thres'], classes = self.cls)[0]
 
         
         bboxes = []
@@ -55,10 +56,10 @@ class Node(AbstractNode):
         bbox_scores = []
 
         for i,x in enumerate(result.boxes.cls.cpu().numpy()):
-            if x in self.cls:
-                bboxes.append(result.boxes.xyxyn.cpu().numpy()[i])
-                bbox_labels.append(self.names[int(result.boxes.cls.cpu().numpy()[i])])
-                bbox_scores.append(result.boxes.conf.cpu().numpy()[i])
+            # if x in self.cls:
+            bboxes.append(result.boxes.xyxyn.cpu().numpy()[i])
+            bbox_labels.append(self.names[int(result.boxes.cls.cpu().numpy()[i])])
+            bbox_scores.append(result.boxes.conf.cpu().numpy()[i])
 
         
         if self.config['show_bboxes']:
