@@ -61,6 +61,12 @@ class Node(AbstractNode):
                     object_grabbed_by_hand = False
                     area_shrunk_hist = [] #renew
 
+###NOTE: EDITED WITH PHONE, could cause syntax error###
+        else:
+            object_grabbed_by_hand = False
+            area_shrunk_hist = [] #renew
+###end edit###
+
         if len(area_shrunk_hist) == area_shrunk_lim:
             object_grabbed_by_hand = True
         
