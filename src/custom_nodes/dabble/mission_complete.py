@@ -1,0 +1,73 @@
+"""
+Node template for creating custom nodes.
+"""
+
+from typing import Any, Dict
+import cv2, os
+from peekingduck.pipeline.nodes.abstract_node import AbstractNode
+
+DEBUG = True
+
+AUTO_EXIT = True #turn this off to disable this feature
+
+class Node(AbstractNode):
+    """This is a template class of how to write a node for PeekingDuck.
+
+    Args:
+        config (:obj:`Dict[str, Any]` | :obj:`None`): Node configuration.
+    """
+
+    def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
+        super().__init__(config, node_path=__name__, **kwargs)
+
+        # initialize/load any configs and models here
+        # configs can be called by self.<config_name> e.g. self.filepath
+        # self.logger.info(f"model loaded with configs: config")
+
+    def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
+        """This node does ___.
+
+        Args:
+            inputs (dict): Dictionary with keys "__", "__".
+
+        Returns:
+            outputs (dict): Dictionary with keys "__".
+        """
+
+        obj_blocked_by_hand_hist = inputs["obj_blocked_by_hand_hist"]
+        obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
+
+        obj_blocked_by_hand_hist_limit = 45 #blocked for 45 frames
+
+        if obj_blocked_by_hand == True: #must be True and not any other value
+            obj_blocked_by_hand_hist.append(True)
+        else:
+            obj_blocked_by_hand_hist = [] #renew
+
+        if len(obj_blocked_by_hand_hist) > obj_blocked_by_hand_hist_limit: #have been True
+            mission_complete = True
+        else:
+            mission_complete = False
+
+        if DEBUG:
+            self.logger.info("obj_blocked_by_hand_hist:{obj_blocked_by_hand_hist}")
+
+            cv2.putText(
+                img=inputs["img"],
+                text=f"mission_complete:{mission_complete}",
+                org=(240,320),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=0.8,
+                color=(255,255,0),
+                thickness=2,
+            )
+        
+        if AUTO_EXIT and mission_complete:
+            self.logger.info('\nObject reached, exiting program...\n')
+            exit() 
+
+
+        # result = do_something(inputs["in1"], inputs["in2"])
+        # outputs = {"out1": result}
+        # return outputs
+        return {"obj_blocked_by_hand_hist":obj_blocked_by_hand_hist}

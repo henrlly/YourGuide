@@ -73,6 +73,11 @@ class Node(AbstractNode):
         else:
             dist3d = inputs["dist3d"]
 
+        if "obj_blocked_by_hand_hist" not in data_pool:
+            obj_blocked_by_hand_hist = []
+        else:
+            obj_blocked_by_hand_hist = inputs["obj_blocked_by_hand_hist"]
+
         outputs = {"obj_person_onscreen":obj_person_onscreen,
         "loop_count":loop_count,
         "counter":counter,
@@ -81,7 +86,8 @@ class Node(AbstractNode):
         "prev_safe":prev_safe,
         "obj_blocked_by_hand":obj_blocked_by_hand,
         'activate_detection':activate_detection,
-        "dist3d":dist3d}
+        "dist3d":dist3d,
+        "obj_blocked_by_hand_hist":obj_blocked_by_hand_hist}
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs

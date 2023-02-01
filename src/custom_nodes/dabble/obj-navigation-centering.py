@@ -17,7 +17,7 @@ from scripts.tts_tool import tts
 #the further the object, the higher the weight of dist2d_centre (more important to keep it near center)
 ############
 
-DEBUG = True
+DEBUG = False
 DIST_THRESHOLD_3D = 4.5
 DIST_THRESHOLD_2D = 0.5
 
@@ -124,5 +124,5 @@ class Node(AbstractNode):
                     color=(0,0,255),
                     thickness=3,
                 )
-
+                
         return {'activate_detection':activate_detection}

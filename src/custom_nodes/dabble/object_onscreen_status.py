@@ -64,8 +64,8 @@ class Node(AbstractNode):
         counter = inputs["counter"]
         counter_refresh = 20 #unit: frames
 
-        strict_boundary_y = 60 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
-        strict_boundary_x = 80
+        strict_boundary_y = 50 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
+        strict_boundary_x = 70
 
         prev_coord = inputs["prev_coord"]
         prev_displacements = inputs["prev_displacements"]
