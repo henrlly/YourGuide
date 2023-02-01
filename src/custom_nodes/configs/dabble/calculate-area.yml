@@ -2,11 +2,11 @@
 # Receive bounding boxes and their respective labels as input. Replace with
 # other data types as required. List of built-in data types for PeekingDuck can
 # be found at https://peekingduck.readthedocs.io/en/stable/glossary.html.
-input: ["bboxes", "bbox_labels"]
+input: ["n_bboxes", "n_bbox_labels","img"]
 # Example:
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
-output: ["obj_attrs", "custom_key"]
+output: ["area","area_threshold"]
 
-# Optional configs depending on node
-threshold: 0.5 # example
+# # Optional configs depending on node
+# threshold: 0.5 # example

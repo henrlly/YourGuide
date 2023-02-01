@@ -2,7 +2,7 @@ nodes:
 - input.visual:
     source: 0
 
-# - custom_nodes.model.model-door
+- custom_nodes.model.model-door
 
 # - custom_nodes.model.yolov8
 
@@ -13,6 +13,9 @@ nodes:
 - custom_nodes.dabble.object_onscreen_status
 - custom_nodes.dabble.obj-navigation-centering
 - custom_nodes.dabble.obj-navigation
+- custom_nodes.dabble.calculate-area
+- custom_nodes.dabble.mission_complete
+
 
 # - custom_nodes.dabble.debug
 # - custom_nodes.draw.score

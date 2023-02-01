@@ -3,10 +3,12 @@ Node template for creating custom nodes.
 """
 
 from typing import Any, Dict
-import cv2, os
+import cv2
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
-DEBUG = True
+from scripts.tts_tool import tts
+
+DEBUG = False
 
 AUTO_EXIT = True #turn this off to disable this feature
 
@@ -24,6 +26,9 @@ class Node(AbstractNode):
         # configs can be called by self.<config_name> e.g. self.filepath
         # self.logger.info(f"model loaded with configs: config")
 
+        with open('specified_object.txt') as f:
+            self.specified_object = f.read()
+
     def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
         """This node does ___.
 
@@ -37,6 +42,9 @@ class Node(AbstractNode):
         obj_blocked_by_hand_hist = inputs["obj_blocked_by_hand_hist"]
         obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
 
+        area = inputs["area"]
+        area_threshold = inputs["area_threshold"]
+
         obj_blocked_by_hand_hist_limit = 45 #blocked for 45 frames
 
         if obj_blocked_by_hand == True: #must be True and not any other value
@@ -44,7 +52,9 @@ class Node(AbstractNode):
         else:
             obj_blocked_by_hand_hist = [] #renew
 
-        if len(obj_blocked_by_hand_hist) > obj_blocked_by_hand_hist_limit: #have been True
+        if len(obj_blocked_by_hand_hist) > obj_blocked_by_hand_hist_limit: #condition 1: small objects
+            mission_complete = True
+        elif area > area_threshold: #condition 2: door/ could be any large object
             mission_complete = True
         else:
             mission_complete = False
@@ -63,7 +73,13 @@ class Node(AbstractNode):
             )
         
         if AUTO_EXIT and mission_complete:
-            self.logger.info('\nObject reached, exiting program...\n')
+            if self.specified_object == 'door': #may change in the future to include large objects
+                tts(f'The {self.specified_object} is right in front of you, exiting program in three. two. one.') 
+            else:
+                tts(f'{self.specified_object} reached, exiting program in three. two. one.')
+
+            self.logger.info(f'\n{self.specified_object} reached, exiting program...\n')
+
             exit() 
 
 
