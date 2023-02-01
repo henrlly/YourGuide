@@ -78,6 +78,21 @@ class Node(AbstractNode):
         else:
             obj_blocked_by_hand_hist = inputs["obj_blocked_by_hand_hist"]
 
+        if "initial_area" not in data_pool:
+            initial_area = 0
+        else:
+            initial_area = inputs["initial_area"]
+
+        if "prev_area" not in data_pool:
+            prev_area = []
+        else:
+            prev_area = inputs["prev_area"]
+
+        if "area_shrunk_hist" not in data_pool:
+            area_shrunk_hist = []
+        else:
+            area_shrunk_hist = inputs["area_shrunk_hist"]
+
         outputs = {"obj_person_onscreen":obj_person_onscreen,
         "loop_count":loop_count,
         "counter":counter,
@@ -87,7 +102,10 @@ class Node(AbstractNode):
         "obj_blocked_by_hand":obj_blocked_by_hand,
         'activate_detection':activate_detection,
         "dist3d":dist3d,
-        "obj_blocked_by_hand_hist":obj_blocked_by_hand_hist}
+        "obj_blocked_by_hand_hist":obj_blocked_by_hand_hist,
+        "prev_area":prev_area,
+        "initial_area":initial_area,
+        "area_shrunk_hist":area_shrunk_hist}
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs

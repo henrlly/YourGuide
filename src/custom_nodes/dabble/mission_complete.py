@@ -41,6 +41,7 @@ class Node(AbstractNode):
 
         obj_blocked_by_hand_hist = inputs["obj_blocked_by_hand_hist"]
         obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
+        object_grabbed_by_hand = inputs["object_grabbed_by_hand"]
 
         area = inputs["area"]
         area_threshold = inputs["area_threshold"]
@@ -52,10 +53,15 @@ class Node(AbstractNode):
         else:
             obj_blocked_by_hand_hist = [] #renew
 
-        if len(obj_blocked_by_hand_hist) > obj_blocked_by_hand_hist_limit: #condition 1: small objects
+        if len(obj_blocked_by_hand_hist) > obj_blocked_by_hand_hist_limit: #condition 1: small objects blocked by hand
             mission_complete = True
+            self.logger.info('Mission complete: object blocked by hand')
+        elif object_grabbed_by_hand == True:
+            mission_complete = True
+            self.logger.info('Mission complete: object grabbed by hand')
         elif area > area_threshold: #condition 2: door/ could be any large object
             mission_complete = True
+            self.logger.info('Mission complete: large object very close to user')
         else:
             mission_complete = False
 
