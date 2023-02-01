@@ -39,34 +39,29 @@ class Node(AbstractNode):
             outputs (dict): Dictionary with keys "__".
         """
 
-        obj_blocked_by_hand_hist = inputs["obj_blocked_by_hand_hist"]
+        obj_hand_interference_hist = inputs["obj_hand_interference_hist"]
         obj_blocked_by_hand = inputs["obj_blocked_by_hand"]
         object_grabbed_by_hand = inputs["object_grabbed_by_hand"]
 
         area = inputs["area"]
         area_threshold = inputs["area_threshold"]
 
-        obj_blocked_by_hand_hist_limit = 45 #blocked for 45 frames
+        obj_hand_interference_hist_limit = 45 #blocked for 45 frames
 
-        if obj_blocked_by_hand == True: #must be True and not any other value
-            obj_blocked_by_hand_hist.append(True)
+        if obj_blocked_by_hand == True or object_grabbed_by_hand == True: #must be True and not any other value
+            obj_hand_interference_hist.append(True)
         else:
-            obj_blocked_by_hand_hist = [] #renew
+            obj_hand_interference_hist = [] #renew
 
-        if len(obj_blocked_by_hand_hist) > obj_blocked_by_hand_hist_limit: #condition 1: small objects blocked by hand
+        if len(obj_hand_interference_hist) > obj_hand_interference_hist_limit: #condition 1: small objects blocked by hand
             mission_complete = True
-            self.logger.info('Mission complete: object blocked by hand')
-        elif object_grabbed_by_hand == True:
-            mission_complete = True
-            self.logger.info('Mission complete: object grabbed by hand')
         elif area > area_threshold: #condition 2: door/ could be any large object
             mission_complete = True
-            self.logger.info('Mission complete: large object very close to user')
         else:
             mission_complete = False
 
         if DEBUG:
-            self.logger.info("obj_blocked_by_hand_hist:{obj_blocked_by_hand_hist}")
+            self.logger.info("obj_hand_interference_hist:{obj_hand_interference_hist}")
 
             cv2.putText(
                 img=inputs["img"],
@@ -92,4 +87,4 @@ class Node(AbstractNode):
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs
-        return {"obj_blocked_by_hand_hist":obj_blocked_by_hand_hist}
+        return {"obj_hand_interference_hist":obj_hand_interference_hist}

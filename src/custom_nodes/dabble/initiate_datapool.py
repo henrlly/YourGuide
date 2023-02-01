@@ -73,10 +73,10 @@ class Node(AbstractNode):
         else:
             dist3d = inputs["dist3d"]
 
-        if "obj_blocked_by_hand_hist" not in data_pool:
-            obj_blocked_by_hand_hist = []
+        if "obj_hand_interference_hist" not in data_pool:
+            obj_hand_interference_hist = []
         else:
-            obj_blocked_by_hand_hist = inputs["obj_blocked_by_hand_hist"]
+            obj_hand_interference_hist = inputs["obj_hand_interference_hist"]
 
         if "initial_area" not in data_pool:
             initial_area = 0
@@ -102,7 +102,7 @@ class Node(AbstractNode):
         "obj_blocked_by_hand":obj_blocked_by_hand,
         'activate_detection':activate_detection,
         "dist3d":dist3d,
-        "obj_blocked_by_hand_hist":obj_blocked_by_hand_hist,
+        "obj_hand_interference_hist":obj_hand_interference_hist,
         "prev_area":prev_area,
         "initial_area":initial_area,
         "area_shrunk_hist":area_shrunk_hist}

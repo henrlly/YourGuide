@@ -36,7 +36,11 @@ class Node(AbstractNode):
         initial_area = inputs["initial_area"]
         area_shrunk_hist = inputs["area_shrunk_hist"]
 
-        area_shrunk_lim = 45 #max length: 45 frames (best to follow obj_blocked_by_hand_hist_limit in mission_complete.py)
+        # area_shrunk_lim = 45 #max length: 45 frames (best to follow obj_blocked_by_hand_hist_limit in mission_complete.py)
+
+        #NOTE: setting it to 1 is same as disabling area_shrunk
+        area_shrunk_lim = 1 #testing: the previous one is deprecated
+
         area_shrunk_threshold = initial_area/2
         prev_area_lim = 10 #see the object 10 frames before assinging the average area to intial_area
 
