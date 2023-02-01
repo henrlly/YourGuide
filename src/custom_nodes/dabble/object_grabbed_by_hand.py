@@ -6,7 +6,7 @@ from typing import Any, Dict
 import cv2
 from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
-DEBUG = True
+DEBUG = False
 
 class Node(AbstractNode):
     """This is a template class of how to write a node for PeekingDuck.
