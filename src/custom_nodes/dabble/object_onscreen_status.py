@@ -65,7 +65,7 @@ class Node(AbstractNode):
         counter_refresh = 20 #unit: frames
 
         strict_boundary_y = 50 #anywhere less than <strict_boundary> pixels away from img boundary is considered object moving out of screen
-        strict_boundary_x = 70
+        strict_boundary_x = 50
 
         prev_coord = inputs["prev_coord"]
         prev_displacements = inputs["prev_displacements"]
@@ -138,8 +138,9 @@ class Node(AbstractNode):
                         thickness=3,
                     )
                 if bbox_labels[i] == self.obj:
-                    #NOTE: width is 640
-                    if strict_boundary_x<center_x<(640-strict_boundary_x) and strict_boundary_y<center_y<(480-strict_boundary_y):
+                    width = img_size[0]
+                    height = img_size[1]
+                    if strict_boundary_x<center_x<(width-strict_boundary_x) and strict_boundary_y<center_y<(height-strict_boundary_y):
                         safe = True
                     else: 
                         safe = False
@@ -210,6 +211,16 @@ class Node(AbstractNode):
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                 fontScale=1.0,
                 color=(0,0,150),
+                thickness=3,
+            )
+
+            cv2.putText(
+                img=img,
+                text = f"img_size x,y:{img_size}",
+                org=(0, 200),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=1.0,
+                color=(0,0,255),
                 thickness=3,
             )
 
