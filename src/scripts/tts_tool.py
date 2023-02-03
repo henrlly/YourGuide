@@ -2,12 +2,12 @@ import winsound
 from gtts import gTTS
 from pydub import AudioSegment
 
-#proxy setting (if required)#
-try:
-    from misc.proxy_config import change_proxy
-except:
-    from src.misc.proxy_config import change_proxy
-change_proxy('http://127.0.0.1:10809')
+# #proxy setting (if required)#
+# try:
+#     from misc.proxy_config import change_proxy
+# except:
+#     from src.misc.proxy_config import change_proxy
+# change_proxy('http://127.0.0.1:10809')
 
 def tts(text):
     tts_t = gTTS(text)
