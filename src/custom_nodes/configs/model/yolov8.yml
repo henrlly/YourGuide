@@ -9,7 +9,7 @@ input: ["img"]
 output: [ "bboxes", "bbox_labels", 'bbox_scores']
 
 # Optional configs depending on node
-classes: ['cell phone', 'person']
+classes: ['bottle', 'person']
 iou_thres: -1                    # Intersection Over Union threshold
 conf_thres: -1                    # confidence threshold
 weights: 'yolov8s'              # yolov8n, yolov8s, yolov8m
