@@ -2,9 +2,9 @@
 # Receive bounding boxes and their respective labels as input. Replace with
 # other data types as required. List of built-in data types for PeekingDuck can
 # be found at https://peekingduck.readthedocs.io/en/stable/glossary.html.
-input: ["dist2d_centre","img","dist3d","activate_detection", 'n_bbox_labels']
+input: ["dist2d_centre","img","dist3d","activate_detection", 'n_bbox_labels','obj_is_close']
 # Example:
 # Output `obj_attrs` for visualization with `draw.tag` node and `custom_key` for
 # use with other custom nodes. Replace as required.
-output: ["activate_detection"]
+output: ["activate_detection",'obj_is_close']
 

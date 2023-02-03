@@ -93,6 +93,11 @@ class Node(AbstractNode):
         else:
             area_shrunk_hist = inputs["area_shrunk_hist"]
 
+        if "obj_is_close" not in data_pool:
+            obj_is_close = False
+        else:
+            obj_is_close = inputs["obj_is_close"]
+
         outputs = {"obj_person_onscreen":obj_person_onscreen,
         "loop_count":loop_count,
         "counter":counter,
@@ -105,7 +110,8 @@ class Node(AbstractNode):
         "obj_hand_interference_hist":obj_hand_interference_hist,
         "prev_area":prev_area,
         "initial_area":initial_area,
-        "area_shrunk_hist":area_shrunk_hist}
+        "area_shrunk_hist":area_shrunk_hist,
+        "obj_is_close":obj_is_close}
         # result = do_something(inputs["in1"], inputs["in2"])
         # outputs = {"out1": result}
         # return outputs

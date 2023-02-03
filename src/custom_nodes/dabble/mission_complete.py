@@ -46,6 +46,8 @@ class Node(AbstractNode):
         area = inputs["area"]
         area_threshold = inputs["area_threshold"]
 
+        obj_is_close = inputs["obj_is_close"]
+
         obj_hand_interference_hist_limit = 45 #blocked for 45 frames
 
         if obj_blocked_by_hand == True or object_grabbed_by_hand == True: #must be True and not any other value
@@ -53,7 +55,7 @@ class Node(AbstractNode):
         else:
             obj_hand_interference_hist = [] #renew
 
-        if len(obj_hand_interference_hist) > obj_hand_interference_hist_limit: #condition 1: small objects blocked by hand
+        if len(obj_hand_interference_hist) > obj_hand_interference_hist_limit and obj_is_close: #condition 1: small objects blocked by hand
             mission_complete = True
         elif area > area_threshold: #condition 2: door/ could be any large object
             mission_complete = True

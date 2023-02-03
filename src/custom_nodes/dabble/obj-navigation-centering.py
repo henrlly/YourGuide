@@ -125,4 +125,14 @@ class Node(AbstractNode):
                     thickness=3,
                 )
                 
-        return {'activate_detection':activate_detection}
+            coefficient = -1 #default 
+
+        obj_is_close = inputs["obj_is_close"]
+        if obj_is_close == True or dist2d_centre == -1 or dist3d == -1: #object not on screen
+            pass
+        else: #object on screen
+            if dist3d < DIST_THRESHOLD_3D and dist2d_centre < DIST_THRESHOLD_2D and len(bbox_labels)>1 and self.specified_object != 'door':
+                obj_is_close = True
+
+        return {'activate_detection':activate_detection,
+        'obj_is_close':obj_is_close}
