@@ -18,7 +18,7 @@ from scripts.tts_tool import tts
 ############
 
 DEBUG = False
-DIST_THRESHOLD_3D = 4.5
+DIST_THRESHOLD_3D = 4.5 ##differs for each object
 DIST_THRESHOLD_2D = 0.5
 
 class Node(AbstractNode):
@@ -100,7 +100,7 @@ class Node(AbstractNode):
                 self.playsound(f_freq, duration)
 
                 #conditions to activate detection
-                if dist3d < DIST_THRESHOLD_3D and dist2d_centre < DIST_THRESHOLD_2D and len(bbox_labels)>1 and self.specified_object != 'door':
+                if dist3d < DIST_THRESHOLD_3D and dist2d_centre < DIST_THRESHOLD_2D and self.specified_object != 'door':
                     activate_detection = True
                     self.tts_wrapper('Activating detection')
 
@@ -131,7 +131,7 @@ class Node(AbstractNode):
         if obj_is_close == True or dist2d_centre == -1 or dist3d == -1: #object not on screen
             pass
         else: #object on screen
-            if dist3d < DIST_THRESHOLD_3D and dist2d_centre < DIST_THRESHOLD_2D and len(bbox_labels)>1 and self.specified_object != 'door':
+            if dist3d < DIST_THRESHOLD_3D and dist2d_centre < DIST_THRESHOLD_2D and self.specified_object != 'door':
                 obj_is_close = True
 
         return {'activate_detection':activate_detection,
