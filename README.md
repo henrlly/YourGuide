@@ -15,7 +15,7 @@ Download folder and run run.py
 
 **-----------------------------------------------------------------------------------------------------------------------------------------------**
 ### NOTE: this program only supports the windows OS for now. However, this program is meant for mobile phones. 
-To experience what it is like to use this program on mobile phones as intended, please follow the steps below.
+(Optional) To experience what it is like to use this program on mobile phones as intended, please follow the steps below.
 1. Visit https://www.dev47apps.com
 2. Download DroidCam on your mobile device (available on both IOS and Android). You DO NOT have to download DroidCam on your computer.
 3. Make sure your computer and mobile device is connected to the SAME WiFi network.
