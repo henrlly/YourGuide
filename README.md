@@ -23,7 +23,7 @@ To experience what it is like to use this program in mobile phones as intended, 
 5. In pipeline_config_format.yml, change input source to **http://<***WiFi IP***>:<***DroidCam Port***>/video** (E.G.http://196.168.200.200:4747/video)
 6. **Done!** You can just fix your mobile device on your body and run run.py
 
-**NOTE: please wait for the webcam connection to stablise after running run.py. It is usually very laggy at first but it will stablise in a moment(i.e. the peekingduck cv2 windows receives live video signal from your mobile device almost without any lag, provided that you have a decent network connection). The time taken for the connection to stablise is usally shorter on IOS than that on Android.**
+**NOTE: please wait for the webcam connection to stablise after running run.py. It is usually very laggy at first but it will stablise in a moment(i.e. the peekingduck cv2 windows receives live video signal from your mobile device almost without any lag, provided that you have a decent network connection). The time taken for the connection to stablise is usally considerably shorter on IOS than that on Android.**
 
 Alternatively if you want to just execute the program on your computer, change source number to 0(i.e. webcam) in pipeline_config_format.yml 
 
