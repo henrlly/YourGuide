@@ -15,7 +15,7 @@ from scripts.tts_tool import tts
 
 
 IMG_SIZE = (224, 224)
-DEBUG =True
+DEBUG = False
 
 
 
