@@ -25,6 +25,6 @@ To experience what it is like to use this program on mobile phones as intended, 
 
 **NOTE: please wait for the webcam connection to stablise after running run.py. It is usually very laggy at first but it will stablise in a moment(i.e. the peekingduck cv2 windows receives live video signal from your mobile device almost without any lag, provided that you have a decent network connection). The time taken for the connection to stablise is usally considerably shorter on IOS than that on Android.**
 
-Alternatively if you want to just execute the program on your computer, change source number to 0(i.e. webcam) in pipeline_config_format.yml 
+Alternatively if you want to just execute the program on your computer, change input source to 0(i.e. webcam) in pipeline_config_format.yml and run run.py
 
 **------------------------------------------------------------------------------------------------------------------------------------------------**
