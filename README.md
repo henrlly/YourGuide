@@ -20,11 +20,11 @@ Download folder and run run.py
 2. Download DroidCam on your mobile device (available on both IOS and Android). You DO NOT have to download DroidCam on your computer.
 3. Make sure your computer and mobile device is connected to the SAME WiFi network.
 4. Open DroidCam. It will show you your ***WiFi IP*** and your ***DroidCam Port*** (by default usually 4747).
-5. In pipeline_config_format.yml, change input source to **http://<***WiFi IP***>:<***DroidCam Port***>/video** (E.G.http://196.168.200.200:4747/video)
+5. In pipeline_config_format.yml AND pipeline_config_banknote.yml, change input source to **http://<***WiFi IP***>:<***DroidCam Port***>/video** (E.G.http://196.168.200.200:4747/video)
 6. **Done!** You can just fix your mobile device on your body and run run.py
 
 **NOTE: please wait for the webcam connection to stablise after running run.py. It is usually very laggy at first but it will stablise in a moment(i.e. the peekingduck cv2 windows receives live video signal from your mobile device almost without any lag, provided that you have a decent network connection). The time taken for the connection to stablise is usally considerably shorter on IOS than that on Android.**
 
-Alternatively if you want to just execute the program on your computer, change input source to 0(i.e. webcam) in pipeline_config_format.yml and run run.py
+Alternatively if you want to just execute the program on your computer, change input source to 0(i.e. webcam) in pipeline_config_format.yml and pipeline_config_banknote.yml and run run.py
 
 **------------------------------------------------------------------------------------------------------------------------------------------------**
