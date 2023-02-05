@@ -13,7 +13,6 @@ pip install -r requirements.txt --no-deps
 ### How to use
 Download folder and run run.py
 
-**-----------------------------------------------------------------------------------------------------------------------------------------------**
 ### NOTE: this program only supports the windows OS for now. However, this program is meant for mobile phones. 
 (Optional) To experience what it is like to use this program on mobile phones as intended, please follow the steps below.
 1. Visit https://www.dev47apps.com
@@ -26,5 +25,3 @@ Download folder and run run.py
 **NOTE: please wait for the webcam connection to stablise after running run.py. It is usually very laggy at first but it will stablise in a moment(i.e. the peekingduck cv2 windows receives live video signal from your mobile device almost without any lag, provided that you have a decent network connection). The time taken for the connection to stablise is usally considerably shorter on IOS than that on Android.**
 
 Alternatively if you want to just execute the program on your computer, change input source to 0(i.e. webcam) in pipeline_config_format.yml and pipeline_config_banknote.yml and run run.py
-
-**------------------------------------------------------------------------------------------------------------------------------------------------**
