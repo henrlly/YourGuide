@@ -11,11 +11,9 @@ This project was made with [PeekingDuck](https://github.com/aisingapore/PeekingD
  - 3D Surround Sound
  
 # More info
-[Youtube Video Link](https://youtu.be/dM9HiL169Ts)
-
-[Project Proposal Docs](https://drive.google.com/file/d/1EVDFVZjpRslW4Aq669ZsxmdjW251BT0F/view?usp=sharing)
-
-[Presentation Slides](https://docs.google.com/presentation/d/1ZWp2fdp2VQHpYRI-V2839Wg3ltqyxYBvUTPefOD4YRE/edit?usp=sharing)
+ - [Youtube Video Link](https://youtu.be/dM9HiL169Ts)
+ - [Project Proposal Docs](https://drive.google.com/file/d/1EVDFVZjpRslW4Aq669ZsxmdjW251BT0F/view?usp=sharing)
+ - [Presentation Slides](https://docs.google.com/presentation/d/1ZWp2fdp2VQHpYRI-V2839Wg3ltqyxYBvUTPefOD4YRE/edit?usp=sharing)
 
 # Models and datasets used
   - [YOLOv8](https://github.com/ultralytics/ultralytics)
