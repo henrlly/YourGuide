@@ -3,15 +3,27 @@
 **A tool to help the visually impaired or accurately locate and navigate towards items, and navigate surroundings.**
 
 This project was made with [PeekingDuck](https://github.com/aisingapore/PeekingDuck) and achieved top 8 at the [National AI Student Challenge 2022](https://learn.aisingapore.org/national-ai-student-challenge-2022/)
-## More info
+
+# Features
+ - Item Detection
+ - Door Detection
+ - Currency Detecion
+ - 3D Surround Sound
+ 
+# More info
 [Youtube Video Link](https://youtu.be/dM9HiL169Ts)
 
 [Project Proposal Docs](https://drive.google.com/file/d/1EVDFVZjpRslW4Aq669ZsxmdjW251BT0F/view?usp=sharing)
 
 [Presentation Slides](https://docs.google.com/presentation/d/1ZWp2fdp2VQHpYRI-V2839Wg3ltqyxYBvUTPefOD4YRE/edit?usp=sharing)
 
-### Dependencies
+# Models and datasets used
+  - [YOLOv8](https://github.com/ultralytics/ultralytics)
+  - [DoorDetect dataset](https://github.com/MiguelARD/DoorDetect-Dataset)
+
+## Dependencies
 playsound, gtts, pyaudio, peekingduck and SpeechRecognition, winsound, cuda 11.7, pytorch, ultralytics, pydub
+
 install ffmpeg from https://github.com/BtbN/FFmpeg-Builds/releases/
 
 NOTE: peekingduck is buggy with python 3.10 and above, use python<=3.9.13
@@ -22,7 +34,7 @@ pip install -r requirements.txt --no-deps
 ```
 
 
-### How to use
+## How to use
 Download folder and run run.py
 
 ### NOTE: this program only supports the Windows OS for now. However, this program is meant for mobile phones. 
