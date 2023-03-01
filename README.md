@@ -1,3 +1,15 @@
+<img src="https://lh4.googleusercontent.com/V-6OoK7yo2J-VMXkTOWCntp8h_y8MXOdIhbgHS__bb21mAu7RO7ikYJLFB6eQU0j79M=w2400" data-canonical-src="https://lh4.googleusercontent.com/V-6OoK7yo2J-VMXkTOWCntp8h_y8MXOdIhbgHS__bb21mAu7RO7ikYJLFB6eQU0j79M=w2400"/>
+
+**A tool to help the visually impaired or accurately locate and navigate towards items, and navigate surroundings.**
+
+This project was made with [PeekingDuck](https://github.com/aisingapore/PeekingDuck) and achieved top 8 at the [National AI Student Challenge 2022](https://learn.aisingapore.org/national-ai-student-challenge-2022/)
+## More info
+[Youtube Video Link](https://youtu.be/dM9HiL169Ts)
+
+[Project Proposal Docs](https://drive.google.com/file/d/1EVDFVZjpRslW4Aq669ZsxmdjW251BT0F/view?usp=sharing)
+
+[Presentation Slides](https://docs.google.com/presentation/d/1ZWp2fdp2VQHpYRI-V2839Wg3ltqyxYBvUTPefOD4YRE/edit?usp=sharing)
+
 ### Dependencies
 playsound, gtts, pyaudio, peekingduck and SpeechRecognition, winsound, cuda 11.7, pytorch, ultralytics, pydub
 install ffmpeg from https://github.com/BtbN/FFmpeg-Builds/releases/
