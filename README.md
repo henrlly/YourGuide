@@ -1,6 +1,6 @@
 <img src="https://lh4.googleusercontent.com/V-6OoK7yo2J-VMXkTOWCntp8h_y8MXOdIhbgHS__bb21mAu7RO7ikYJLFB6eQU0j79M=w2400" data-canonical-src="https://lh4.googleusercontent.com/V-6OoK7yo2J-VMXkTOWCntp8h_y8MXOdIhbgHS__bb21mAu7RO7ikYJLFB6eQU0j79M=w2400"/>
 
-**A tool to help the visually impaired or accurately locate and navigate towards items, and navigate surroundings.**
+**A tool to help the visually impaired accurately locate and navigate towards items and through surroundings.**
 
 This project was made with [PeekingDuck](https://github.com/aisingapore/PeekingDuck) and achieved top 8 at the [National AI Student Challenge 2022](https://learn.aisingapore.org/national-ai-student-challenge-2022/)
 
