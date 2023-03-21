@@ -1,8 +1,27 @@
-import os, sys
-
+import os, sys, requests
 
 from src.scripts.tts_tool import tts
 import speech_recognition as sr
+
+
+dl_dict = {
+    'yolov8n.pt': 'https://www.dropbox.com/s/l2a0xmzn5e8mp1z/yolov8n.pt?raw=1',
+    'yolov8s.pt': 'https://www.dropbox.com/s/5ysji17e5khgg62/yolov8s.pt?raw=1',
+    'best-door.pt': 'https://www.dropbox.com/s/z9nm08hign2ycnw/best-door.pt?raw=1',
+    'best-door-m.pt': 'https://www.dropbox.com/s/v0bj8j361rxmeeo/best-door-m.pt?raw=1',
+    'best-cls.pt': 'https://www.dropbox.com/s/zhfmdlrbt5f4qo8/best-cls.pt?raw=1',
+    'best-cls-m.pt': 'https://www.dropbox.com/s/crgvy33jc52smhk/best-cls-m.pt?raw=1',
+}
+
+def download_models():
+    print('Downloading models...')
+    for k, v in dl_dict.items():
+        if not os.path.exists(k):
+            resp = requests.get(v)
+            with open(k, "wb") as f:
+                f.write(resp.content)
+    print('Download done!')
+        
 
 
 def recognize_speech_from_mic(recognizer, microphone):
@@ -101,6 +120,8 @@ def get_response_mode():
     return guess["transcription"].lower()
 
 if __name__ == '__main__':
+    
+    download_models()
 
     item = get_response_item()
     if item=='doors':
