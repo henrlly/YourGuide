@@ -2,7 +2,7 @@
 
 **A tool to help the visually impaired accurately locate items and navigate through surroundings.**
 
-This project was made with [PeekingDuck](https://github.com/aisingapore/PeekingDuck) and achieved **top 3** at the [National AI Student Challenge 2022](https://learn.aisingapore.org/national-ai-student-challenge-2022/)
+This project was made with [PeekingDuck](https://github.com/aisingapore/PeekingDuck) and **won** the [National AI Student Challenge 2022 - Category B](https://learn.aisingapore.org/national-ai-student-challenge-2022/)
 
 # Features
  - Item Detection
