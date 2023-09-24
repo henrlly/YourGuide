@@ -12,13 +12,12 @@ This project was made with [PeekingDuck](https://github.com/aisingapore/PeekingD
  
 # More info
  - [Youtube Video](https://youtu.be/dM9HiL169Ts)
- - [Project Proposal Docs](https://drive.google.com/file/d/1EVDFVZjpRslW4Aq669ZsxmdjW251BT0F/view?usp=sharing)
- - [Presentation Slides](https://docs.google.com/presentation/d/1ZWp2fdp2VQHpYRI-V2839Wg3ltqyxYBvUTPefOD4YRE/edit?usp=sharing)
+ - [Presentation Slides](https://docs.google.com/presentation/d/12sfLQuavHRqNMKUimziwcDez71J3EDVFjtYy9YeGvWk/edit?usp=sharing)
 
 # Models and datasets used
   - [YOLOv8](https://github.com/ultralytics/ultralytics)
   - [DoorDetect Dataset](https://github.com/MiguelARD/DoorDetect-Dataset)
-  - [Custom Singapore Banknote Dataset](https://drive.google.com/drive/folders/1F1Q3tUeF_t_-uHIarzwvGONlVpT1rWOg?usp=sharing)
+  - [Custom Singapore Banknote Dataset](https://drive.google.com/drive/folders/1h-2Wim_NyZwUZfmJFs9iMRM1wMyfy3CL?usp=sharing)
 
 ## Dependencies
 Libraries used: gTTS, PyAudio, PeekingDuck and SpeechRecognition, Winsound, CUDA 11.7, PyTorch, Ultralytics, OpenAL, playsound and pydub
